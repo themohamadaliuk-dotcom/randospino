@@ -15,7 +15,7 @@ jobs:
       - name: JavaScript syntax
         run: |
           set -e
-          for f in app.js data.js new-tools.js new-tools-extra.js more-tools.js home-v5.js home-v6.js analytics.js wheel-fix.js wheel-v2.js; do
+          for f in app.js data.js new-tools.js new-tools-extra.js more-tools.js home-v5.js home-v6.js home-v6-finish.js analytics.js wheel-fix.js wheel-v2.js; do
             node --check "$f"
           done
 
@@ -69,10 +69,14 @@ jobs:
               'random-planet/index.html','random-element/index.html','random-era/index.html',
               'random-activity/index.html','random-classroom-choice/index.html','random-food-ingredient/index.html'
           }
-          for css in ('style.css','home-v3.css','wheel-v2.css'):
+          for css in ('style.css','home-v3.css','home-v6-finish.css','wheel-v2.css'):
               t = Path(css).read_text(encoding='utf-8')
               if t.count('{') != t.count('}'):
                   raise SystemExit(f'CSS brace mismatch: {css}')
+          homepage = Path('index.html').read_text(encoding='utf-8')
+          for required in ('analytics.js','home-v6.js','home-v6-finish.js','home-v6-finish.css'):
+              if required not in homepage:
+                  raise SystemExit(f'Homepage missing 2.0 asset: {required}')
           pages = list(Path('.').glob('*/index.html'))
           for page in pages:
               p = page.as_posix()
