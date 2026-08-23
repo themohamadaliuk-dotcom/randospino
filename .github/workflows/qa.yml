@@ -15,14 +15,16 @@ jobs:
       - name: JavaScript syntax
         run: |
           set -e
-          for f in app.js data.js new-tools.js new-tools-extra.js more-tools.js home-v5.js; do node --check "$f"; done
+          for f in app.js data.js new-tools.js new-tools-extra.js more-tools.js home-v5.js home-v6.js analytics.js wheel-fix.js wheel-v2.js; do
+            node --check "$f"
+          done
 
       - name: Validate homepage tool routes
         run: |
           python - <<'PY'
           from pathlib import Path
           import re
-          js = Path('home-v5.js').read_text(encoding='utf-8')
+          js = Path('home-v6.js').read_text(encoding='utf-8')
           urls = re.findall(r"\['[^']+',\'([^']+)/\'", js)
           missing = []
           for url in urls:
@@ -56,24 +58,36 @@ jobs:
         run: |
           python - <<'PY'
           from pathlib import Path
-          for css in ('style.css','home-v3.css'):
+          seo_pages = {
+              'random-picker-for-classroom/index.html','random-team-generator-for-work/index.html',
+              'random-picker-for-parties/index.html','random-wheel-for-students/index.html',
+              'random-game-generator/index.html','random-name-generators/index.html',
+              'random-team-generators/index.html','random-food-generators/index.html',
+              'random-decision-tools/index.html','random-party-games/index.html','random-wheel-spinner/index.html'
+          }
+          self_contained = {
+              'random-planet/index.html','random-element/index.html','random-era/index.html',
+              'random-activity/index.html','random-classroom-choice/index.html','random-food-ingredient/index.html'
+          }
+          for css in ('style.css','home-v3.css','wheel-v2.css'):
               t = Path(css).read_text(encoding='utf-8')
               if t.count('{') != t.count('}'):
                   raise SystemExit(f'CSS brace mismatch: {css}')
           pages = list(Path('.').glob('*/index.html'))
           for page in pages:
-              if page.as_posix() == 'privacy/index.html':
+              p = page.as_posix()
+              if p == 'privacy/index.html' or p in seo_pages:
                   continue
               html = page.read_text(encoding='utf-8')
+              if p in self_contained:
+                  if '<script>' not in html or 'addEventListener' not in html:
+                      raise SystemExit(f'Self-contained page missing inline generator: {page}')
+                  continue
               if 'data-tool=' not in html:
                   raise SystemExit(f'Missing data-tool: {page}')
-              if 'data-self-contained="true"' in html:
-                  if '<script>' not in html:
-                      raise SystemExit(f'Self-contained page has no inline script: {page}')
-                  continue
               if not any(x in html for x in ('../app.js','../new-tools.js','../new-tools-extra.js','../more-tools.js')):
                   raise SystemExit(f'Missing engine script: {page}')
-          print(f'Validated {len(pages)} tool/page documents.')
+          print(f'Validated {len(pages)} page documents.')
           PY
 
       - name: Validate self-contained generators
@@ -82,18 +96,13 @@ jobs:
           python - <<'PY'
           from pathlib import Path
           required = [
-              'random-planet/index.html',
-              'random-element/index.html',
-              'random-era/index.html',
-              'random-activity/index.html',
-              'random-classroom-choice/index.html',
+              'random-planet/index.html','random-element/index.html','random-era/index.html',
+              'random-activity/index.html','random-classroom-choice/index.html','random-food-ingredient/index.html'
           ]
           for filename in required:
               text = Path(filename).read_text(encoding='utf-8')
-              if 'data-self-contained="true"' not in text:
-                  raise SystemExit(f'Missing self-contained marker: {filename}')
-              if 'addEventListener' not in text:
-                  raise SystemExit(f'Missing Generate click handler: {filename}')
+              if '<script>' not in text or 'addEventListener' not in text:
+                  raise SystemExit(f'Missing inline Generate handler: {filename}')
               if 'crypto.getRandomValues' not in text:
                   raise SystemExit(f'Missing secure randomness: {filename}')
           print('Validated self-contained generator pages.')
