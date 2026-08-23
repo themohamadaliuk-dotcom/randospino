@@ -7,20 +7,31 @@
   <link rel="canonical" href="https://randospino.com/">
   <link rel="stylesheet" href="style.css">
   <title>RandoSpino — Randomise It. Pick It. Decide It.</title>
-  <script src="app.js?v=4" defer></script>
+  <script src="app.js?v=5" defer></script>
+  <script src="home-v3.js?v=1" defer></script>
 </head>
 <body>
   <header class="site-header"><div class="nav-wrap">
     <a class="brand" href="./"><span class="brand-mark">R</span><span>RandoSpino</span></a>
-    <nav><a href="#random">Random</a><a href="#decide">Decide</a><a href="#generate">Generate</a></nav>
+    <nav><a href="#random">Random</a><a href="#decide">Decide</a><a href="#generate">Generate</a><a href="#explore">Explore</a></nav>
   </div></header>
   <main>
     <section class="hero">
       <span class="eyebrow">RANDOM • DECIDE • PLAY</span>
       <h1>Can't decide?<br><span>Let us choose.</span></h1>
       <p>Fast, free randomizers, pickers and generators for everyday decisions, games and good fun.</p>
-      <a class="hero-btn" href="./random-picker/">🎲 Pick something for me</a>
-      <div class="hero-pills"><span>Free to use</span><span>No sign-up</span><span>Instant results</span></div>
+      <div class="hero-actions"><a class="hero-btn" href="./random-picker/">🎲 Pick something for me</a><button class="hero-btn hero-btn-alt" id="surpriseBtn" type="button">✨ Surprise Me</button></div>
+      <div class="hero-pills"><span>Free to use</span><span>No sign-up</span><span>Instant results</span><span>More tools arriving regularly</span></div>
+    </section>
+
+    <section class="v3-discovery section">
+      <div class="v3-search-wrap">
+        <span class="kicker">FIND A TOOL</span>
+        <h2>What do you want to randomise?</h2>
+        <div class="v3-search-box"><span>⌕</span><input id="v3-search" type="search" placeholder="Try football, dinner, names, games…" autocomplete="off"><strong id="v3-search-count"></strong></div>
+      </div>
+      <div class="v3-utilities" id="v3-tools"></div>
+      <button class="share-site" id="shareSite" type="button">↗ Share RandoSpino</button>
     </section>
 
     <section class="section" id="random"><div class="section-head"><div><span class="kicker">RANDOM</span><h2>Randomise anything.</h2></div><p>Numbers, names, countries, colours and more.</p></div>
@@ -63,8 +74,13 @@
       </div>
     </section>
 
-    <section class="cta"><h2>Built for the moments when you just can't choose.</h2><p>Use RandoSpino for games, parties, classrooms, teams, couples or your next random idea.</p><a class="hero-btn dark" href="./random-picker/">Start picking →</a></section>
+    <section class="section alt" id="explore"><div class="section-head"><div><span class="kicker">EXPLORE</span><h2>Everything in one place.</h2></div><p>Search, favourite and revisit the tools you love.</p></div><div class="v3-directory" id="v3-directory"></div></section>
+
+    <section class="cta"><h2>Built for the moments when you just can't choose.</h2><p>Use RandoSpino for games, parties, classrooms, teams, couples or your next random idea.</p><div class="hero-actions"><a class="hero-btn dark" href="./random-picker/">Start picking →</a><button class="hero-btn dark" id="surpriseBtn2" type="button">✨ Surprise me</button></div></section>
   </main>
-  <footer><div class="footer-wrap"><div><a class="brand footer-brand" href="./"><span class="brand-mark">R</span><span>RandoSpino</span></a><p>Randomise it. Pick it. Decide it.</p></div><div class="footer-links"><a href="#random">Random</a><a href="#decide">Decide</a><a href="#generate">Generate</a><a href="./privacy/">Privacy</a></div></div><div class="footer-bottom">© 2026 RandoSpino. Built for fun.</div></footer>
+  <footer><div class="footer-wrap"><div><a class="brand footer-brand" href="./"><span class="brand-mark">R</span><span>RandoSpino</span></a><p>Randomise it. Pick it. Decide it.</p></div><div class="footer-links"><a href="#random">Random</a><a href="#decide">Decide</a><a href="#generate">Generate</a><a href="#explore">Explore</a><a href="./privacy/">Privacy</a></div></div><div class="footer-bottom">© 2026 RandoSpino. Built for fun.</div></footer>
+  <script>
+    (function(){var b=document.getElementById('surpriseBtn2');var a=document.getElementById('surpriseBtn');if(b&&a)b.addEventListener('click',function(){a.click()})})();
+  </script>
 </body>
 </html>
