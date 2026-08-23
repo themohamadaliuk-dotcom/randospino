@@ -25,23 +25,32 @@ jobs:
         uses: actions/checkout@v4
       - name: Configure Pages
         uses: actions/configure-pages@v5
-      - name: Normalize project-site navigation and wheel assets
+      - name: Normalize project-site links, canonicals and compatibility assets
         run: |
           python - <<'PY'
           from pathlib import Path
+          base='https://themohamadaliuk-dotcom.github.io/randospino/'
           for page in [Path('index.html'), *Path('.').glob('*/index.html')]:
-              text = page.read_text(encoding='utf-8')
-              if page.as_posix() == 'index.html':
-                  text = text.replace('</head>', '<script src="./project-site-fix.js?v=2" defer></script></head>', 1)
+              text=page.read_text(encoding='utf-8')
+              if page.as_posix()=='index.html':
+                  text=text.replace('https://randospino.com/','https://themohamadaliuk-dotcom.github.io/randospino/')
+                  if 'project-site-fix.js' not in text:
+                      text=text.replace('</head>','<script src="./project-site-fix.js?v=3" defer></script></head>',1)
               else:
-                  text = text.replace('href="/#', 'href="../#')
-                  text = text.replace('href="/"', 'href="../"')
-                  text = text.replace('</head>', '<script src="../project-site-fix.js?v=2" defer></script></head>', 1)
-              if page.as_posix() == 'wheel-spinner/index.html':
-                  text = text.replace('../wheel-v2.css"', '../wheel-v2.css?v=4"')
-              page.write_text(text, encoding='utf-8')
-          print('Normalized project-site navigation and injected the wheel/layout compatibility fix.')
+                  text=text.replace('href="/#','href="../#').replace('href="/"','href="../"')
+                  import re
+                  route=page.parent.as_posix().strip('./')+'/'
+                  text=re.sub(r'<link([^>]+rel="canonical"[^>]+href=")[^"]+(")',lambda m:m.group(1)+base+route+m.group(2),text,flags=re.I)
+                  if 'project-site-fix.js' not in text:
+                      text=text.replace('</head>','<script src="../project-site-fix.js?v=3" defer></script></head>',1)
+                  if page.as_posix()=='wheel-spinner/index.html':
+                      text=text.replace('../wheel-v2.css"','../wheel-v2.css?v=7"')
+              page.write_text(text,encoding='utf-8')
+          print('Normalized project-site navigation, canonicals, compatibility scripts and wheel cache.')
           PY
+      - name: Normalize sitemap and robots.txt to the live GitHub Pages URL
+        run: |
+          sed -i 's#https://randospino.com#https://themohamadaliuk-dotcom.github.io/randospino#g' sitemap.xml robots.txt
       - name: Upload site artifact
         uses: actions/upload-pages-artifact@v3
         with:
