@@ -1,0 +1,59 @@
+name: RandoSpino QA
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  qa:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Check JavaScript syntax
+        run: node --check app.js
+
+      - name: Check site structure
+        shell: bash
+        run: |
+          set -e
+          test -f index.html
+          test -f app.js
+          test -f style.css
+          test -f robots.txt
+          test -f sitemap.xml
+          find . -mindepth 2 -maxdepth 2 -name index.html -print | sort
+
+      - name: Check CSS balance and tool routes
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+
+          css = Path('style.css').read_text(encoding='utf-8')
+          if css.count('{') != css.count('}'):
+              raise SystemExit('CSS brace balance failed')
+
+          app = Path('app.js').read_text(encoding='utf-8')
+          keys = set(re.findall(r'^\s{4}([A-Za-z0-9]+):\s*\{', app, flags=re.M))
+
+          pages = list(Path('.').glob('*/index.html'))
+          if not pages:
+              raise SystemExit('No tool pages found')
+
+          for page in pages:
+              html = page.read_text(encoding='utf-8')
+              match = re.search(r'data-tool="([A-Za-z0-9]+)"', html)
+              if page.as_posix() != 'privacy/index.html':
+                  if not match:
+                      raise SystemExit(f'Missing data-tool in {page}')
+                  key = match.group(1)
+                  if key not in keys:
+                      raise SystemExit(f'Missing tool implementation for {page}: {key}')
+                  if '../app.js' not in html:
+                      raise SystemExit(f'Missing app.js include in {page}')
+
+          print(f'Checked {len(pages)} tool pages and {len(keys)} tool definitions.')
+          PY
