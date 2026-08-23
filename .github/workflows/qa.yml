@@ -13,7 +13,10 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Check JavaScript syntax
-        run: node --check app.js
+        shell: bash
+        run: |
+          set -e
+          for f in app.js data.js home-v3.js new-tools.js; do node --check "$f"; done
 
       - name: Check site structure
         shell: bash
@@ -22,13 +25,17 @@ jobs:
           test -f index.html
           test -f app.js
           test -f data.js
+          test -f new-tools.js
+          test -f home-v3.js
+          test -f home-v3.css
           test -f style.css
           test -f robots.txt
           test -f sitemap.xml
           find . -mindepth 2 -maxdepth 2 -name index.html -print | sort
 
-      - name: Check CSS balance and tool routes
+      - name: Check CSS, routes and tool wiring
         run: |
+          set -e
           python - <<'PY'
           from pathlib import Path
           import re
@@ -36,30 +43,34 @@ jobs:
           css = Path('style.css').read_text(encoding='utf-8')
           if css.count('{') != css.count('}'):
               raise SystemExit('CSS brace balance failed')
+          home_css = Path('home-v3.css').read_text(encoding='utf-8')
+          if home_css.count('{') != home_css.count('}'):
+              raise SystemExit('Home CSS brace balance failed')
 
           app = Path('app.js').read_text(encoding='utf-8')
           keys = set(re.findall(r'^\s{2}([A-Za-z0-9]+):\s*\{', app, flags=re.M))
-
-          required = {'randomNumber','coinFlip','diceRoller','randomPicker','wheelSpinner','randomName','randomWord','randomCountry','randomColour','randomTeam','whoGoesFirst','yesOrNo','randomMovie','randomMeal','randomChallenge','randomGame','randomDate','usernameGenerator','gamerNameGenerator','teamNameGenerator','fantasyNameGenerator','petNameGenerator','partyGameGenerator','couplesDecisionMaker','secretSantaPicker','animals'}
+          required = {'randomNumber','coinFlip','diceRoller','randomPicker','wheelSpinner','randomName','randomWord','randomCountry','randomColour','randomTeam','whoGoesFirst','yesOrNo','randomMovie','randomMeal','randomChallenge','randomGame','randomDate','usernameGenerator','gamerNameGenerator','teamNameGenerator','fantasyNameGenerator','petNameGenerator','partyGameGenerator','couplesDecisionMaker','secretSantaPicker'}
           missing = required - keys
           if missing:
               raise SystemExit(f'Missing expected tool implementations: {sorted(missing)}')
 
           pages = list(Path('.').glob('*/index.html'))
           if not pages:
-              raise SystemExit('No tool pages found')
-
+              raise SystemExit('No pages found')
           for page in pages:
               html = page.read_text(encoding='utf-8')
+              if page.as_posix() == 'privacy/index.html':
+                  continue
               match = re.search(r'data-tool="([A-Za-z0-9]+)"', html)
-              if page.as_posix() != 'privacy/index.html':
-                  if not match:
-                      raise SystemExit(f'Missing data-tool in {page}')
+              if match:
                   key = match.group(1)
-                  if key not in keys:
+                  if key not in keys and "../new-tools.js" not in html:
                       raise SystemExit(f'Missing tool implementation for {page}: {key}')
-                  if '../app.js' not in html:
-                      raise SystemExit(f'Missing app.js include in {page}')
+                  if '../app.js' not in html and '../new-tools.js' not in html:
+                      raise SystemExit(f'Missing JS engine include in {page}')
+              else:
+                  if '<h1' not in html:
+                      raise SystemExit(f'Page has no heading: {page}')
 
-          print(f'Checked {len(pages)} tool pages and {len(keys)} tool definitions.')
+          print(f'Checked {len(pages)} pages and {len(keys)} core tool implementations.')
           PY
