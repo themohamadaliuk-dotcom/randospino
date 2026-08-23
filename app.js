@@ -2,481 +2,191 @@
   'use strict';
 
   var DATA = {
-    names: ['Alex','Ava','Charlie','Emily','Harry','Isla','Jack','Liam','Mia','Noah','Olivia','Oscar','Sophie','Theo','Zoe','Amelia','Arthur','Ella','George','Grace','Leo','Lily','Max','Ruby','Thomas','Freya','Daniel','Poppy','William','Evie','Adam','Alice','Benjamin','Chloe','Daisy','Edward','Eliza','Finley','Hannah','Henry','James','Jessica','Joseph','Layla','Lucas','Lucy','Matthew','Maya','Michael','Nora','Oliver','Phoebe','Samuel','Scarlett','Sebastian','Sophia','Toby','Victoria'],
-    words: ['adventure','bright','courage','forest','journey','kindness','moment','ocean','puzzle','spark','sunshine','wander','wonder','rhythm','discovery','horizon','lantern','meadow','midnight','treasure','whistle','breeze','galaxy','marble','thunder','curious','echo','velvet','sunrise','comet','rainbow','drift','whisper','orbit','castle','garden','river','wildflower','starlight','passport'],
-    countries: ['Australia','Argentina','Austria','Belgium','Brazil','Canada','Chile','China','Colombia','Croatia','Czechia','Denmark','Egypt','Finland','France','Germany','Greece','Hungary','Iceland','India','Indonesia','Ireland','Italy','Japan','Kenya','Malaysia','Mexico','Morocco','Netherlands','New Zealand','Norway','Peru','Philippines','Poland','Portugal','Singapore','South Africa','South Korea','Spain','Sweden','Switzerland','Thailand','Türkiye','United Kingdom','United States','Vietnam'],
+    names: {
+      Global: ['Aarav','Abigail','Adam','Aisha','Akira','Alejandro','Ali','Amara','Amelia','Ana','Anaya','Andrei','Aria','Aya','Ben','Camila','Carlos','Chloe','Daniel','David','Elena','Elias','Emily','Emma','Ethan','Fatima','Felix','Freya','Gabriel','Grace','Hana','Hannah','Hassan','Hugo','Ibrahim','Isabella','Ivan','Jamal','Jasmine','Javier','Jia','Joseph','Julia','Kai','Kareem','Layla','Leo','Leila','Liam','Lina','Lucas','Lucia','Maya','Mia','Mika','Mohamed','Nadia','Naomi','Nora','Noah','Olivia','Omar','Oscar','Priya','Rafael','Rania','Ruby','Sam','Sara','Sofia','Sophia','Tariq','Theo','Valentina','Victor','Yara','Yasmin','Yuki','Zain','Zoe'],
+      Arabic: ['Aaliyah','Amina','Aya','Farah','Fatima','Hala','Hana','Huda','Iman','Laila','Layla','Leen','Mariam','Maya','Nadia','Noor','Rania','Reem','Salma','Sara','Yasmin','Zahra','Ahmed','Ali','Amir','Hassan','Hussein','Ibrahim','Jamal','Kareem','Khalid','Mahmoud','Omar','Rami','Samir','Tariq','Yusuf','Zaid','Zain'],
+      SouthAsian: ['Aarav','Aanya','Aditya','Anika','Arjun','Diya','Ishaan','Kavya','Kiara','Meera','Neha','Nisha','Pari','Priya','Rhea','Rohan','Saanvi','Sahil','Sana','Shreya','Siya','Tanvi','Varun','Veer','Vihaan'],
+      EastAsian: ['Aiko','Akira','Aya','Emi','Hana','Haruto','Hiro','Kai','Kenji','Kenta','Mei','Ren','Riku','Sakura','Sora','Yuki','Yuna','Hyejin','Jisoo','Minho','Seojun','Sora','Wei','Xinyi','Yichen'],
+      African: ['Amina','Amara','Ayana','Chiamaka','Efe','Imani','Jabari','Kofi','Lerato','Mandla','Nia','Nneka','Olu','Sade','Tariro','Thabo','Wanjiku','Zuri','Kwame','Kabelo'],
+      European: ['Alba','Amelia','Anna','Arthur','Beatrice','Clara','Elena','Elise','Emma','Eva','Finn','Freya','George','Greta','Hugo','Iris','Luca','Lucia','Matteo','Mila','Nina','Oscar','Sofia','Theo','Viktor'],
+      LatinAmerican: ['Alejandro','Camila','Diego','Elena','Emilia','Gabriela','Isabella','Javier','Lucia','Mateo','Mateus','Natalia','Rafael','Renata','Santiago','Sofia','Valentina','Ximena','Yasmin','Thiago']
+    },
+    words: {
+      Any: ['adventure','bright','courage','forest','journey','kindness','moment','ocean','puzzle','spark','sunshine','wander','wonder','rhythm','discovery','horizon','lantern','meadow','midnight','treasure','whistle','breeze','galaxy','marble','thunder','curious','echo','velvet','sunrise','comet','rainbow','drift','whisper','orbit','castle','garden','river','wildflower','starlight','passport'],
+      Nature: ['forest','ocean','river','meadow','wildflower','sunrise','rainbow','thunder','breeze','garden','mountain','valley','island','sunset','rain','cloud','leaf','stone','willow','moonlight'],
+      Creative: ['canvas','melody','sketch','poem','rhythm','novel','design','colour','story','idea','spark','imagine','create','invent','wonder'],
+      Positive: ['kindness','courage','joy','hope','smile','gratitude','friendship','success','calm','bright','brave','trust','respect','laugh','dream']
+    },
+    countries: ['Argentina','Australia','Austria','Belgium','Brazil','Canada','Chile','China','Colombia','Croatia','Czechia','Denmark','Egypt','Finland','France','Germany','Greece','Hungary','Iceland','India','Indonesia','Ireland','Italy','Japan','Kenya','Malaysia','Mexico','Morocco','Netherlands','New Zealand','Norway','Peru','Philippines','Poland','Portugal','Singapore','South Africa','South Korea','Spain','Sweden','Switzerland','Thailand','Türkiye','United Kingdom','United States','Vietnam'],
+    countriesByRegion: {
+      Europe: ['Austria','Belgium','Croatia','Czechia','Denmark','Finland','France','Germany','Greece','Hungary','Iceland','Ireland','Italy','Netherlands','Norway','Poland','Portugal','Spain','Sweden','Switzerland','United Kingdom'],
+      Asia: ['China','India','Indonesia','Japan','Malaysia','Philippines','Singapore','South Korea','Thailand','Türkiye','Vietnam'],
+      Africa: ['Egypt','Kenya','Morocco','South Africa'],
+      Americas: ['Argentina','Brazil','Canada','Chile','Colombia','Mexico','Peru','United States'],
+      Oceania: ['Australia','New Zealand']
+    },
     movies: ['The Dark Knight','The Grand Budapest Hotel','Back to the Future','Spirited Away','Jurassic Park','The Matrix','Inception','Toy Story','The Lord of the Rings: The Fellowship of the Ring','Spider-Man: Into the Spider-Verse','Knives Out','Paddington 2','Guardians of the Galaxy','The Truman Show','School of Rock','Interstellar','The Martian','The Princess Bride','Jumanji','The Incredibles'],
-    meals: ['Pizza','Tacos','Curry','Pasta','Burgers','Sushi','Stir-fry','Fajitas','Ramen','Jacket potato','Mac and cheese','Greek salad','Chilli','Fish and chips','Burritos','Chicken wrap','Lasagne','Pad Thai','Risotto','Kebab'],
-    challenges: ['Do 20 squats','Take a 10-minute walk','Send someone a nice message','Learn one new fact','Draw something in 60 seconds','Go 30 minutes without your phone','Try a new snack','Compliment someone','Write down three things you are grateful for','Take a photo of something interesting','Do a 5-minute tidy-up','Make up a silly slogan','Write a 4-line poem','Do a one-minute dance','Learn how to say hello in another language'],
+    moviesByGenre: {
+      Any: ['The Dark Knight','The Grand Budapest Hotel','Back to the Future','Spirited Away','Jurassic Park','The Matrix','Inception','Toy Story','Knives Out','Interstellar','The Martian','The Princess Bride','School of Rock','The Incredibles'],
+      Action: ['The Dark Knight','The Matrix','Jurassic Park','Inception','Guardians of the Galaxy','Spider-Man: Into the Spider-Verse'],
+      Comedy: ['The Grand Budapest Hotel','School of Rock','Paddington 2','The Princess Bride','The Truman Show'],
+      Family: ['Toy Story','Paddington 2','The Incredibles','Jumanji','Spider-Man: Into the Spider-Verse'],
+      SciFi: ['The Matrix','Inception','Interstellar','The Martian','Back to the Future'],
+      Mystery: ['Knives Out','The Truman Show','The Dark Knight']
+    },
+    meals: ['Pizza','Tacos','Curry','Pasta','Burgers','Sushi','Stir-fry','Fajitas','Ramen','Jacket potato','Mac and cheese','Greek salad','Chilli','Fish and chips','Burritos','Chicken wrap','Lasagne','Pad Thai','Risotto','Kebab','Pho','Paella','Bibimbap','Falafel','Dumplings'],
+    mealsByType: {
+      Any: ['Pizza','Tacos','Curry','Pasta','Burgers','Sushi','Stir-fry','Fajitas','Ramen','Jacket potato','Mac and cheese','Greek salad','Chilli','Fish and chips','Burritos','Chicken wrap','Lasagne','Pad Thai','Risotto','Kebab','Pho','Paella','Bibimbap','Falafel','Dumplings'],
+      Quick: ['Pizza','Pasta','Jacket potato','Chicken wrap','Burgers','Tacos','Stir-fry'],
+      Healthy: ['Greek salad','Stir-fry','Falafel','Chicken wrap','Sushi','Buddha bowl','Grilled fish'],
+      Comfort: ['Mac and cheese','Lasagne','Chilli','Jacket potato','Curry','Pizza'],
+      International: ['Sushi','Ramen','Pad Thai','Pho','Paella','Bibimbap','Falafel','Tacos','Curry','Kebab']
+    },
+    challenges: ['Do 20 squats','Take a 10-minute walk','Send someone a nice message','Learn one new fact','Draw something in 60 seconds','Go 30 minutes without your phone','Try a new snack','Compliment someone','Write down three things you are grateful for','Take a photo of something interesting','Do a 5-minute tidy-up','Make up a silly slogan','Write a four-line poem','Do a one-minute dance','Learn how to say hello in another language','Organise one drawer','Write down a future goal'],
+    challengesByType: {
+      Any: ['Do 20 squats','Take a 10-minute walk','Send someone a nice message','Learn one new fact','Draw something in 60 seconds','Go 30 minutes without your phone','Try a new snack','Compliment someone','Write down three things you are grateful for','Take a photo of something interesting','Do a 5-minute tidy-up','Make up a silly slogan','Write a four-line poem','Do a one-minute dance','Learn how to say hello in another language','Organise one drawer','Write down a future goal'],
+      Quick: ['Do 20 squats','Draw something in 60 seconds','Compliment someone','Do a one-minute dance','Make up a silly slogan','Take a photo of something interesting'],
+      Creative: ['Draw something in 60 seconds','Write a four-line poem','Make up a silly slogan','Write a tiny story','Invent a superhero','Create a new word'],
+      Social: ['Send someone a nice message','Compliment someone','Ask a friend an interesting question','Tell someone a joke','Thank someone for something'],
+      Productivity: ['Do a 5-minute tidy-up','Organise one drawer','Write down a future goal','Delete ten old screenshots','Make a short to-do list']
+    },
     games: ['Charades','Pictionary','20 Questions','Heads Up!','Two Truths and a Lie','Categories','Would You Rather','Simon Says','Trivia','Word Association','Telephone','Guess the Song','I Spy','Hangman','Scattergories','The Alphabet Game','Truth or Dare','Name That Tune'],
     animals: ['Dog','Cat','Fox','Panda','Penguin','Koala','Tiger','Otter','Dolphin','Red panda','Hedgehog','Rabbit','Elephant','Giraffe','Parrot','Lion','Zebra','Gorilla','Turtle','Kangaroo','Panda'],
-    fantasyFirst: ['Ael','Bryn','Cael','Dara','Eira','Fael','Galen','Ilyra','Kael','Lyra','Mira','Nyx','Orin','Riven','Sylas','Elara','Thorne','Seren','Vael','Arwen'],
+    fantasyFirst: ['Ael','Bryn','Cael','Dara','Eira','Fael','Galen','Ilyra','Kael','Lyra','Mira','Nyx','Orin','Riven','Sylas','Elara','Thorne','Seren','Vael','Arwen','Cerys','Dorian','Elowen','Fenric','Isolde'],
     fantasyLast: ['Moonfall','Stormborn','Nightvale','Silverleaf','Starweaver','Brightwater','Emberstone','Dawnwhisper','Shadowmere','Frostvale','Oakenshield','Ravencrest','Sunfire','Mistwalker','Ironheart','Duskwarden'],
     gamerFirst: ['Neon','Shadow','Turbo','Pixel','Cosmic','Mystic','Rapid','Rogue','Lucky','Frost','Blaze','Nova','Viper','Cyber','Phantom','Hyper','Atomic','Zero','Quantum','Arcane'],
     gamerLast: ['Fox','Panda','Tiger','Nova','Byte','Runner','Wizard','Spark','Otter','Ace','Wolf','Dragon','Knight','Ghost','Reaper','Vortex','Rider','Ninja','Fury','Raptor'],
     teamWords: ['Legends','Warriors','Titans','Rockets','Falcons','Storm','Blaze','Vipers','Ravens','Wolves','Comets','Raiders','Giants','Foxes','Hawks','Dragons','Knights','Chargers','Panthers','Guardians'],
     partyGames: ['Charades','Pictionary','Musical Chairs','Trivia','Murder Mystery','Karaoke Challenge','Minute to Win It','Scavenger Hunt','Two Truths and a Lie','Guess the Song','Would You Rather','Dare Challenge','Freeze Dance','Human Bingo','Act It Out'],
-    petFirst: ['Bella','Luna','Milo','Coco','Teddy','Daisy','Buddy','Poppy','Rocky','Nala','Toby','Ruby','Bailey','Oreo','Mabel','Milo','Biscuit','Loki','Willow','Pepper'],
-    petSecond: ['Bear','Bean','Moon','Paws','Bug','Biscuit','Pepper','Scout','Sunny','Blue','Maple','Waffles','Pickle','Cookie','Mochi','Bubbles']
+    petFirst: ['Bella','Luna','Milo','Coco','Teddy','Daisy','Buddy','Poppy','Rocky','Nala','Toby','Ruby','Bailey','Oreo','Mabel','Biscuit','Loki','Willow','Pepper','Mochi'],
+    petSecond: ['Bear','Bean','Moon','Paws','Bug','Biscuit','Pepper','Scout','Sunny','Blue','Maple','Waffles','Pickle','Cookie','Mochi','Bubbles'],
+    themes: {
+      gaming: ['Neon','Pixel','Cyber','Turbo','Shadow','Quantum','Arcade','Glitch','Rogue','Nova','Phantom','Byte','Viper','Frost','Blaze'],
+      football: ['Goal','Striker','Keeper','Pitch','Boot','Tackle','Volley','Finesse','Captain','United','Derby','Premier'],
+      space: ['Cosmic','Orbit','Nova','Lunar','Solar','Stellar','Astro','Rocket','Comet','Nebula','Eclipse','Galaxy'],
+      nature: ['Forest','River','Wild','Oak','Pine','Moss','Willow','Summit','Meadow','Canyon','Leaf','Rain'],
+      music: ['Beat','Rhythm','Melody','Vinyl','Bass','Echo','Tempo','Lyric','Chord','Wave','Groove','Sonic'],
+      anime: ['Kitsune','Shinobi','Ronin','Kitsune','Sakura','Kage','Hikari','Akuma','Yuki','Ryu','Mochi','Sora'],
+      tech: ['Code','Byte','Logic','Kernel','Pixel','Cloud','Data','Stack','Script','Binary','Tech','Node'],
+      cars: ['Turbo','Drift','Rally','Apex','Nitro','Torque','V8','Piston','Roadster','Track','Speed','Cruise'],
+      luxury: ['Elite','Royal','Velvet','Gold','Diamond','Platinum','Silk','Prestige','Monarch','Opal','Crown','Luxe'],
+      cute: ['Mochi','Bunny','Peach','Berry','Poppy','Panda','Cookie','Bubbles','Sunny','Cherry','Honey','Daisy'],
+      fantasy: ['Dragon','Rune','Mythic','Wizard','Raven','Arcane','Ember','Knight','Frost','Mystic','Quest','Shadow'],
+      dark: ['Void','Night','Grim','Raven','Wraith','Dusk','Shadow','Hex','Obsidian','Phantom','Ash','Eclipse'],
+      travel: ['Nomad','Wander','Atlas','Roamer','Voyage','Passport','Jetset','Trail','Globe','Compass','Horizon','Trek'],
+      food: ['Taco','Noodle','Pepper','Basil','Cookie','Sushi','Curry','Mango','Berry','Pasta','Mocha','Chilli']
+    }
   };
 
   function byId(id) { return document.getElementById(id); }
-
   function secureUint32() {
-    if (!window.crypto || !window.crypto.getRandomValues) {
-      throw new Error('Secure browser randomness is not available in this browser. Please use an up-to-date browser.');
-    }
-    var bucket = new Uint32Array(1);
-    window.crypto.getRandomValues(bucket);
-    return bucket[0];
+    if (!window.crypto || !window.crypto.getRandomValues) throw new Error('Secure browser randomness is unavailable. Please use a modern browser.');
+    var a = new Uint32Array(1); window.crypto.getRandomValues(a); return a[0];
   }
-
   function randomInt(min, max) {
-    min = Math.ceil(Number(min));
-    max = Math.floor(Number(max));
-    if (!isFinite(min) || !isFinite(max) || max < min) {
-      throw new Error('Please enter a valid range.');
-    }
-
+    min = Math.ceil(Number(min)); max = Math.floor(Number(max));
+    if (!isFinite(min) || !isFinite(max) || max < min) throw new Error('Please enter a valid range.');
     var span = max - min + 1;
     var limit = Math.floor(4294967296 / span) * span;
-    var value;
-    do {
-      value = secureUint32();
-    } while (value >= limit);
-
-    return min + (value % span);
+    var v; do { v = secureUint32(); } while (v >= limit);
+    return min + (v % span);
   }
-
-  function pick(list) {
-    if (!list || !list.length) throw new Error('There are no choices available.');
-    return list[randomInt(0, list.length - 1)];
+  function pick(list) { if (!list || !list.length) throw new Error('There are no choices available.'); return list[randomInt(0, list.length - 1)]; }
+  function values(id) { var e = byId(id); return e ? e.value.split(/[\n,]+/).map(function (x) { return x.trim(); }).filter(Boolean) : []; }
+  function unique(id) { var out=[]; values(id).forEach(function(v){ if(out.indexOf(v)<0) out.push(v); }); return out; }
+  function esc(value) { return String(value).replace(/[&<>\"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',"'":'&#39;'}[c];}); }
+  function shuffle(list) { var a=list.slice(); for(var i=a.length-1;i>0;i--){var j=randomInt(0,i),t=a[i];a[i]=a[j];a[j]=t;} return a; }
+  function field(label, html) { return '<div class="field"><label>' + label + '</label>' + html + '</div>'; }
+  function resultMain(html) { return '<div class="result-main">' + html + '</div>'; }
+  function copyText(text) { if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text); }
+  function formatColour() {
+    var r=randomInt(0,255),g=randomInt(0,255),b=randomInt(0,255);
+    var hex='#'+((1<<24)+(r<<16)+(g<<8)+b).toString(16).slice(1).toUpperCase();
+    var max=Math.max(r,g,b)/255,min=Math.min(r,g,b)/255,l=(max+min)/2, h=0,s=0,d=max-min;
+    if(d){s=l>0.5?d/(2-max-min):d/(max+min);switch(max){case r:h=(g-b)/d+(g<b?6:0);break;case g:h=(b-r)/d+2;break;default:h=(r-g)/d+4;}h=Math.round(h*60);} 
+    s=Math.round(s*100); l=Math.round(l*100);
+    return {hex:hex,r:r,g:g,b:b,h:h,s:s,l:l};
   }
-
-  function values(id) {
-    var el = byId(id);
-    if (!el) return [];
-    return el.value.split(/[\n,]+/).map(function (value) { return value.trim(); }).filter(Boolean);
+  function namePool(region){ return DATA.names[region] || DATA.names.Global; }
+  function themeKey(raw){ var s=String(raw||'').toLowerCase(); var keys=Object.keys(DATA.themes); for(var i=0;i<keys.length;i++){ if(s.indexOf(keys[i])>=0) return keys[i]; } var map={space:'space',gaming:'gaming',gamer:'gaming',football:'football',soccer:'football',anime:'anime',tech:'tech',computer:'tech',nature:'nature',forest:'nature',music:'music',song:'music',car:'cars',cars:'cars',luxury:'luxury',rich:'luxury',cute:'cute',fantasy:'fantasy',magic:'fantasy',dark:'dark',travel:'travel',holiday:'travel',food:'food',cooking:'food'}; for(var k in map){if(s.indexOf(k)>=0)return map[k];} return 'gaming'; }
+  function makeUsername(theme, includeNumber, separator) {
+    var key=themeKey(theme), list=DATA.themes[key], first=pick(list), second=pick(DATA.gamerLast), sep=separator||'';
+    var out=first+sep+second;
+    if(includeNumber) out += sep + randomInt(10,999);
+    return out;
   }
-
-  function uniqueValues(id) {
-    var result = [];
-    values(id).forEach(function (value) {
-      if (result.indexOf(value) === -1) result.push(value);
-    });
-    return result;
+  function makeWheel(items) {
+    var center=260,radius=236,slice=360/items.length,colors=['#6b57f1','#ff5f98','#14b8a6','#f59e0b','#06b6d4','#8b5cf6','#ef4444','#22c55e','#3b82f6','#ec4899','#84cc16','#f97316'];
+    function p(angle,d){var r=(angle-90)*Math.PI/180;return {x:center+d*Math.cos(r),y:center+d*Math.sin(r)};}
+    var svg='<svg class="wheel-svg" viewBox="0 0 520 520" aria-label="Decision wheel"><g id="wheel-disc">';
+    items.forEach(function(item,i){var st=i*slice,en=(i+1)*slice,a=p(st,radius),b=p(en,radius),m=st+slice/2,lr=items.length>12?148:items.length>8?165:180,lp=p(m,lr),fs=items.length>12?11:items.length>8?13:16,path='M 260 260 L '+a.x.toFixed(2)+' '+a.y.toFixed(2)+' A 236 236 0 '+(slice>180?1:0)+' 1 '+b.x.toFixed(2)+' '+b.y.toFixed(2)+' Z';svg+='<path d="'+path+'" fill="'+colors[i%colors.length]+'" stroke="rgba(255,255,255,.9)" stroke-width="2"></path><text x="'+lp.x.toFixed(2)+'" y="'+lp.y.toFixed(2)+'" font-size="'+fs+'" font-weight="800" fill="#fff" text-anchor="middle" dominant-baseline="middle">'+esc(item.length>18?item.slice(0,17)+'…':item)+'</text>';});
+    svg+='</g><circle cx="260" cy="260" r="28" fill="#fff" stroke="#ddd8f5" stroke-width="4"></circle><circle cx="260" cy="260" r="8" fill="#6b57f1"></circle></svg>';return svg;
   }
-
-  function escapeHtml(value) {
-    return String(value).replace(/[&<>\"']/g, function (char) {
-      return { '&':'&amp;', '<':'&lt;', '>':'&gt;', '\"':'&quot;', "'":'&#39;' }[char];
-    });
-  }
-
-  function shuffle(list) {
-    var copy = list.slice();
-    for (var i = copy.length - 1; i > 0; i--) {
-      var j = randomInt(0, i);
-      var temp = copy[i];
-      copy[i] = copy[j];
-      copy[j] = temp;
-    }
-    return copy;
-  }
-
-  function resultHtml(html) {
-    return '<div class="result-main">' + html + '</div>';
-  }
-
-  function field(label, html) {
-    return '<div class="field"><label>' + label + '</label>' + html + '</div>';
-  }
-
-  function makeDateString(date) {
-    return date.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
-  }
-
-  function randomDateBetween(from, to) {
-    var start = new Date(from + 'T12:00:00').getTime();
-    var end = new Date(to + 'T12:00:00').getTime();
-    if (!isFinite(start) || !isFinite(end) || end < start) {
-      throw new Error('Choose a valid date range.');
-    }
-    var days = Math.floor((end - start) / 86400000);
-    return new Date(start + randomInt(0, days) * 86400000);
-  }
-
-  function createWheelSvg(items) {
-    var size = 520;
-    var center = 260;
-    var radius = 236;
-    var count = items.length;
-    var slice = 360 / count;
-    var colors = ['#6b57f1','#ff5f98','#14b8a6','#f59e0b','#06b6d4','#8b5cf6','#ef4444','#22c55e','#3b82f6','#ec4899','#84cc16','#f97316'];
-    var markup = '<svg class="wheel-svg" viewBox="0 0 520 520" role="img" aria-label="Random selection wheel"><g class="wheel-disc" id="wheel-disc">';
-
-    function point(angle, distance) {
-      var radians = (angle - 90) * Math.PI / 180;
-      return {
-        x: center + distance * Math.cos(radians),
-        y: center + distance * Math.sin(radians)
-      };
-    }
-
-    items.forEach(function (item, index) {
-      var start = index * slice;
-      var end = (index + 1) * slice;
-      var p1 = point(start, radius);
-      var p2 = point(end, radius);
-      var largeArc = slice > 180 ? 1 : 0;
-      var path = 'M ' + center + ' ' + center + ' L ' + p1.x.toFixed(2) + ' ' + p1.y.toFixed(2) + ' A ' + radius + ' ' + radius + ' 0 ' + largeArc + ' 1 ' + p2.x.toFixed(2) + ' ' + p2.y.toFixed(2) + ' Z';
-      var mid = start + slice / 2;
-      var labelRadius = count > 12 ? 148 : count > 8 ? 168 : 180;
-      var lp = point(mid, labelRadius);
-      var textSize = count > 12 ? 12 : count > 8 ? 14 : 16;
-      markup += '<path d="' + path + '" fill="' + colors[index % colors.length] + '" stroke="rgba(255,255,255,.85)" stroke-width="2"></path>';
-      markup += '<text x="' + lp.x.toFixed(2) + '" y="' + lp.y.toFixed(2) + '" font-size="' + textSize + '" font-weight="800" fill="#fff" text-anchor="middle" dominant-baseline="middle" transform="rotate(' + mid.toFixed(2) + ' ' + lp.x.toFixed(2) + ' ' + lp.y.toFixed(2) + ')">' + escapeHtml(item.length > 18 ? item.slice(0, 17) + '…' : item) + '</text>';
-    });
-
-    markup += '</g><circle cx="260" cy="260" r="28" fill="#fff" stroke="#ddd8f5" stroke-width="4"></circle><circle cx="260" cy="260" r="8" fill="#6b57f1"></circle></svg>';
-    return markup;
-  }
+  function setHistory(key, value) { var arr=[]; try{arr=JSON.parse(sessionStorage.getItem('rs_'+key)||'[]')}catch(e){} arr.unshift(value); if(arr.length>12)arr=arr.slice(0,12); try{sessionStorage.setItem('rs_'+key,JSON.stringify(arr))}catch(e){} return arr; }
+  function getHistory(key) { try{return JSON.parse(sessionStorage.getItem('rs_'+key)||'[]')}catch(e){return []} }
+  function historyHtml(arr) { return arr.length ? '<div class="history"><span>Recent</span>'+arr.map(function(v){return '<button type="button" class="history-chip" data-history="'+esc(v)+'">'+esc(v)+'</button>';}).join('')+'</div>' : ''; }
 
   var TOOLS = {
-    randomNumber: {
-      title: 'Random Number Generator',
-      desc: 'Pick a random whole number between two limits.',
-      render: function () { return field('Minimum','<input id="min" type="number" value="1">') + field('Maximum','<input id="max" type="number" value="100">'); },
-      run: function () { return resultHtml(String(randomInt(byId('min').value, byId('max').value))); }
-    },
-    coinFlip: {
-      title: 'Coin Flip',
-      desc: 'Flip a genuinely random virtual coin.',
-      render: function () { return '<p class="control-help">Every flip is independently selected using your browser\'s secure random generator. Repeats are possible — just like a real coin.</p>'; },
-      run: function () { return resultHtml(randomInt(0, 1) === 0 ? 'Heads 🪙' : 'Tails 🪙'); }
-    },
-    diceRoller: {
-      title: 'Dice Roller',
-      desc: 'Roll one or more standard six-sided dice.',
-      render: function () { return field('Number of dice','<input id="count" type="number" value="1" min="1" max="100">'); },
-      run: function () {
-        var count = Math.max(1, Math.min(100, Number(byId('count').value) || 1));
-        var rolls = [];
-        var total = 0;
-        for (var i = 0; i < count; i++) { var roll = randomInt(1, 6); rolls.push(roll); total += roll; }
-        return resultHtml(rolls.join(' · ') + '<small>Total: ' + total + '</small>');
-      }
-    },
-    randomPicker: {
-      title: 'Random Picker',
-      desc: 'Enter a list of choices and let chance pick one.',
-      render: function () { return field('Choices','<textarea id="items" rows="8" placeholder="Pizza\nBurger\nPasta"></textarea>'); },
-      run: function () { var list = values('items'); if (!list.length) throw new Error('Add at least one choice.'); return resultHtml(escapeHtml(pick(list))); }
-    },
-    wheelSpinner: {
-      title: 'Wheel Spinner',
-      desc: 'Add entries, spin the wheel, and let chance choose a winner.',
-      render: function () {
-        return '<div class="wheel-shell"><div class="wheel-pointer" aria-hidden="true"></div><div class="wheel-wrap" id="wheel-wrap">' + createWheelSvg(['Pizza','Burger','Pasta','Curry']) + '</div></div>' +
-          field('Wheel entries','<textarea id="items" rows="8" placeholder="Pizza\nBurger\nPasta\nCurry">Pizza\nBurger\nPasta\nCurry</textarea>') +
-          '<label class="check-row"><input id="removeWinner" type="checkbox"> Remove the winner after each spin</label>' +
-          '<p class="control-help">The pointer stays fixed. The wheel itself spins and lands on the randomly selected entry.</p>';
-      },
-      run: function () { return ''; }
-    },
-    randomName: {
-      title: 'Random Name Generator',
-      desc: 'Pick a random first name.',
-      render: function () { return '<p class="control-help">Generate a first name instantly.</p>'; },
-      run: function () { return resultHtml(escapeHtml(pick(DATA.names))); }
-    },
-    randomWord: {
-      title: 'Random Word Generator',
-      desc: 'Get a random everyday word for games, writing and ideas.',
-      render: function () { return '<p class="control-help">Useful for writing prompts, games, brainstorming and creative exercises.</p>'; },
-      run: function () { return resultHtml(escapeHtml(pick(DATA.words))); }
-    },
-    randomCountry: {
-      title: 'Random Country Generator',
-      desc: 'Spin the globe and see where you land.',
-      render: function () { return '<p class="control-help">Pick a country at random.</p>'; },
-      run: function () { return resultHtml('🌍 ' + escapeHtml(pick(DATA.countries))); }
-    },
-    randomColour: {
-      title: 'Random Colour Generator',
-      desc: 'Generate a random colour and HEX code.',
-      render: function () { return '<p class="control-help">Generate a colour you can use in a design or project.</p>'; },
-      run: function () {
-        var hex = '#' + randomInt(0, 16777215).toString(16).toUpperCase().padStart(6, '0');
-        return '<div class="result-main colour-result"><i style="background:' + hex + '"></i><b>' + hex + '</b></div>';
-      }
-    },
-    randomTeam: {
-      title: 'Random Team Generator',
-      desc: 'Split names into fair random teams.',
-      render: function () { return field('Names','<textarea id="items" rows="8" placeholder="Alex\nSam\nJamie\nTaylor"></textarea>') + field('Number of teams','<input id="teams" type="number" value="2" min="2" max="20">'); },
-      run: function () {
-        var list = uniqueValues('items');
-        var teamCount = Math.max(2, Math.min(20, Number(byId('teams').value) || 2));
-        if (list.length < teamCount) throw new Error('Add at least as many names as teams.');
-        var teams = [];
-        for (var i = 0; i < teamCount; i++) teams.push([]);
-        shuffle(list).forEach(function (name, index) { teams[index % teamCount].push(name); });
-        return teams.map(function (team, index) { return '<div class="team-block"><strong>Team ' + (index + 1) + '</strong><span>' + team.map(escapeHtml).join(', ') + '</span></div>'; }).join('');
-      }
-    },
-    whoGoesFirst: {
-      title: 'Who Goes First?',
-      desc: 'Choose a first player fairly.',
-      render: function () { return field('Names','<textarea id="items" rows="6" placeholder="Alex\nSam\nJamie"></textarea>'); },
-      run: function () { var list = values('items'); if (!list.length) throw new Error('Add some names first.'); return resultHtml('🏁 ' + escapeHtml(pick(list))); }
-    },
-    yesOrNo: {
-      title: 'Yes or No',
-      desc: 'Need a simple answer? Ask RandoSpino.',
-      render: function () { return field('Question (optional)','<input id="question" type="text" placeholder="Should I order pizza?">'); },
-      run: function () { return resultHtml(pick(['Yes ✅','No ❌'])); }
-    },
-    randomMovie: {
-      title: 'Random Movie Picker',
-      desc: 'Pick a movie when you cannot decide what to watch.',
-      render: function () { return '<p class="control-help">One quick suggestion. Generate again whenever you want another pick.</p>'; },
-      run: function () { return resultHtml('🎬 ' + escapeHtml(pick(DATA.movies))); }
-    },
-    randomMeal: {
-      title: 'Random Meal Generator',
-      desc: 'Let chance decide what you are eating.',
-      render: function () { return '<p class="control-help">A quick meal idea for when nobody can decide.</p>'; },
-      run: function () { return resultHtml('🍕 ' + escapeHtml(pick(DATA.meals))); }
-    },
-    randomChallenge: {
-      title: 'Random Challenge Generator',
-      desc: 'Get a fun challenge to try.',
-      render: function () { return '<p class="control-help">Keep generating until you find one you like.</p>'; },
-      run: function () { return resultHtml('🔥 ' + escapeHtml(pick(DATA.challenges))); }
-    },
-    randomGame: {
-      title: 'Random Game Picker',
-      desc: 'Pick a game for your group.',
-      render: function () { return '<p class="control-help">Great for friends, families, classrooms and parties.</p>'; },
-      run: function () { return resultHtml('🎮 ' + escapeHtml(pick(DATA.games))); }
-    },
-    randomDate: {
-      title: 'Random Date Generator',
-      desc: 'Generate a random date within a range.',
-      render: function () { return '<div class="date-grid"><div class="field"><label>From</label><input id="from" type="date"></div><div class="field"><label>To</label><input id="to" type="date"></div></div>'; },
-      run: function () {
-        var from = byId('from').value;
-        var to = byId('to').value;
-        var now = new Date();
-        if (!from) from = now.toISOString().slice(0, 10);
-        if (!to) { var later = new Date(now); later.setFullYear(later.getFullYear() + 1); to = later.toISOString().slice(0, 10); }
-        return resultHtml('📅 ' + makeDateString(randomDateBetween(from, to)));
-      }
-    },
-    usernameGenerator: {
-      title: 'Username Generator',
-      desc: 'Create a memorable username in seconds.',
-      render: function () { return field('Theme (optional)','<input id="theme" type="text" placeholder="gaming, music, space...">'); },
-      run: function () { return resultHtml(escapeHtml(pick(DATA.gamerFirst) + pick(DATA.gamerLast) + randomInt(10, 999))); }
-    },
-    gamerNameGenerator: {
-      title: 'Gamer Name Generator',
-      desc: 'Find a new gaming handle.',
-      render: function () { return '<p class="control-help">Generate a handle with a clean, memorable structure.</p>'; },
-      run: function () { return resultHtml(escapeHtml(pick(DATA.gamerFirst) + pick(DATA.gamerLast) + randomInt(1, 99))); }
-    },
-    teamNameGenerator: {
-      title: 'Team Name Generator',
-      desc: 'Instant names for your squad.',
-      render: function () { return '<p class="control-help">Generate a bold team name.</p>'; },
-      run: function () { return resultHtml(escapeHtml(pick(DATA.teamWords) + ' ' + pick(['Club','Crew','United','Squad','League','Collective']))); }
-    },
-    fantasyNameGenerator: {
-      title: 'Fantasy Name Generator',
-      desc: 'Characters, kingdoms, creatures and more.',
-      render: function () { return '<p class="control-help">Generate a fantasy-style character name.</p>'; },
-      run: function () { return resultHtml(escapeHtml(pick(DATA.fantasyFirst) + ' ' + pick(DATA.fantasyLast))); }
-    },
-    petNameGenerator: {
-      title: 'Pet Name Generator',
-      desc: 'Find a name for your new best friend.',
-      render: function () { return '<p class="control-help">Works for dogs, cats and all kinds of pets.</p>'; },
-      run: function () { return resultHtml(escapeHtml(pick(DATA.petFirst) + ' ' + pick(DATA.petSecond))); }
-    },
-    partyGameGenerator: {
-      title: 'Party Game Generator',
-      desc: 'Pick a game everyone can play.',
-      render: function () { return '<p class="control-help">Generate a party-friendly game idea.</p>'; },
-      run: function () { return resultHtml('🎉 ' + escapeHtml(pick(DATA.partyGames))); }
-    },
-    couplesDecisionMaker: {
-      title: 'Couples Decision Maker',
-      desc: 'Let RandoSpino settle the little things.',
-      render: function () { return field('Option A','<input id="a" type="text" placeholder="Movie night">') + field('Option B','<input id="b" type="text" placeholder="Dinner out">'); },
-      run: function () { var a = byId('a').value.trim(); var b = byId('b').value.trim(); if (!a || !b) throw new Error('Enter both options first.'); return resultHtml('❤️ ' + escapeHtml(pick([a,b]))); }
-    },
-    secretSantaPicker: {
-      title: 'Secret Santa Picker',
-      desc: 'Make a fair Secret Santa draw without anyone drawing themselves.',
-      render: function () { return field('Names','<textarea id="items" rows="10" placeholder="Alex\nSam\nJamie\nTaylor"></textarea>'); },
-      run: function () {
-        var people = uniqueValues('items');
-        if (people.length < 2) throw new Error('Add at least two different names.');
-        var targets = null;
-        for (var tries = 0; tries < 500; tries++) {
-          var shuffled = shuffle(people);
-          var valid = shuffled.every(function (person, index) { return person !== people[index]; });
-          if (valid) { targets = shuffled; break; }
-        }
-        if (!targets) throw new Error('We could not make a valid draw. Try adding another name.');
-        return people.map(function (giver, index) { return '<div class="team-block"><strong>' + escapeHtml(giver) + '</strong><span>→ ' + escapeHtml(targets[index]) + '</span></div>'; }).join('');
-      }
-    },
-    animals: {
-      title: 'Random Animal Generator',
-      desc: 'Pick a random animal.',
-      render: function () { return '<p class="control-help">A quick animal picker for games, ideas and prompts.</p>'; },
-      run: function () { return resultHtml('🐾 ' + escapeHtml(pick(DATA.animals))); }
-    }
+    randomNumber:{title:'Random Number Generator',desc:'Choose an independent random number — no predictable turn-taking.',render:function(){return field('Minimum','<input id="min" type="number" value="1">')+field('Maximum','<input id="max" type="number" value="100">')+field('Mode','<select id="mode"><option value="integer">Whole number</option><option value="decimal">Decimal</option></select>')},run:function(){var min=Number(byId('min').value),max=Number(byId('max').value);if(!isFinite(min)||!isFinite(max)||max<min)throw new Error('Enter a valid minimum and maximum.');if(byId('mode').value==='integer')return resultMain(randomInt(Math.ceil(min),Math.floor(max)));var scaled=randomInt(Math.ceil(min*100),Math.floor(max*100))/100;return resultMain(scaled.toFixed(2));}},
+    coinFlip:{title:'Coin Flip',desc:'Heads or tails, with every flip independently random.',render:function(){var h=getHistory('coin');return '<p class="control-help">Each flip is an independent cryptographic random draw. Consecutive Heads or Tails are completely possible — the tool never alternates results on purpose.</p><div class="stats"><strong id="coin-count">'+h.length+'</strong><span>flips this session</span></div><div id="coin-history">'+historyHtml(h)+'</div>'},run:function(){var v= randomInt(0,1)===0?'Heads':'Tails';var h=setHistory('coin',v);return resultMain(v==='Heads'?'Heads 🪙':'Tails 🪙')+'<div class="stats"><strong>'+h.length+'</strong><span>flips this session</span></div>'+historyHtml(h);}},
+    diceRoller:{title:'Dice Roller',desc:'Roll one or many dice with your choice of sides.',render:function(){return field('Number of dice','<input id="count" type="number" value="1" min="1" max="100">')+field('Sides','<select id="sides"><option>4</option><option selected>6</option><option>8</option><option>10</option><option>12</option><option>20</option><option>100</option></select>')},run:function(){var n=Math.max(1,Math.min(100,Number(byId('count').value)||1)),s=Number(byId('sides').value),a=[],t=0;for(var i=0;i<n;i++){var r=randomInt(1,s);a.push(r);t+=r;}return resultMain(a.join(' · ')+'<small>Total: '+t+'</small>');}},
+    randomPicker:{title:'Random Picker',desc:'Paste your own choices and pick one fairly.',render:function(){return field('Choices','<textarea id="items" rows="8" placeholder="Pizza\nBurger\nPasta\nCurry"></textarea>')+field('Avoid immediate repeat','<select id="avoid"><option value="yes" selected>Yes</option><option value="no">No</option></select>')},run:function(){var a=unique('items');if(!a.length)throw new Error('Add at least one choice.');var h=getHistory('picker'),pool=a;if(byId('avoid').value==='yes'&&a.length>1&&h.length&&a.indexOf(h[0])>=0)pool=a.filter(function(x){return x!==h[0]});var v=pick(pool),hh=setHistory('picker',v);return resultMain(esc(v))+historyHtml(hh);}},
+    wheelSpinner:{title:'Wheel Spinner',desc:'A real animated wheel that spins and lands on one of your entries.',render:function(){return '<div class="wheel-shell"><div class="wheel-pointer"></div><div class="wheel-wrap" id="wheel-wrap">'+makeWheel(['Pizza','Burger','Pasta','Curry','Tacos','Sushi'])+'</div></div>'+field('Wheel entries','<textarea id="items" rows="8" placeholder="Pizza\nBurger\nPasta\nCurry">Pizza\nBurger\nPasta\nCurry\nTacos\nSushi</textarea>')+'<label class="check-row"><input id="removeWinner" type="checkbox"> Remove winner after each spin</label><p class="control-help">Your entries redraw the wheel automatically when they change.</p>'},run:function(){return ''; }},
+    randomName:{title:'Random Name Generator',desc:'Explore a broader mix of first names from around the world.',render:function(){return field('Name pool','<select id="region"><option>Global</option><option>Arabic</option><option>SouthAsian</option><option>EastAsian</option><option>African</option><option>European</option><option>LatinAmerican</option></select>')},run:function(){return resultMain(esc(pick(namePool(byId('region').value))));}},
+    randomWord:{title:'Random Word Generator',desc:'Generate a useful word with optional category.',render:function(){return field('Category','<select id="category"><option>Any</option><option>Nature</option><option>Creative</option><option>Positive</option></select>')},run:function(){return resultMain(esc(pick(DATA.words[byId('category').value]||DATA.words.Any)));}},
+    randomCountry:{title:'Random Country Generator',desc:'Pick a country globally or from a region.',render:function(){return field('Region','<select id="region"><option value="Any">Worldwide</option><option>Europe</option><option>Asia</option><option>Africa</option><option>Americas</option><option>Oceania</option></select>')},run:function(){var r=byId('region').value,a=r==='Any'?DATA.countries:DATA.countriesByRegion[r];return resultMain('🌍 '+esc(pick(a)));}},
+    randomColour:{title:'Random Colour Generator',desc:'Generate a colour with copyable HEX, RGB and HSL values.',render:function(){return field('Format emphasis','<select id="format"><option value="all">Show all</option><option value="hex">HEX</option><option value="rgb">RGB</option><option value="hsl">HSL</option></select>')},run:function(){var c=formatColour(),blocks='<div class="colour-swatch" style="background:'+c.hex+'"></div><div class="colour-meta"><div><strong>HEX</strong><button class="copy-result" data-copy="'+c.hex+'">'+c.hex+'</button></div><div><strong>RGB</strong><button class="copy-result" data-copy="rgb('+c.r+', '+c.g+', '+c.b+')">rgb('+c.r+', '+c.g+', '+c.b+')</button></div><div><strong>HSL</strong><button class="copy-result" data-copy="hsl('+c.h+', '+c.s+'%, '+c.l+'%)">hsl('+c.h+', '+c.s+'%, '+c.l+'%)</button></div></div>';return blocks;}},
+    randomTeam:{title:'Random Team Generator',desc:'Shuffle names and split them as evenly as possible.',render:function(){return field('Names','<textarea id="items" rows="8" placeholder="Alex\nSam\nJamie\nTaylor\nJordan\nMaya"></textarea>')+field('Number of teams','<input id="teams" type="number" value="2" min="2" max="20">')},run:function(){var a=unique('items'),t=Math.max(2,Math.min(20,Number(byId('teams').value)||2));if(a.length<t)throw new Error('Add at least as many names as teams.');var o=[];for(var i=0;i<t;i++)o.push([]);shuffle(a).forEach(function(v,k){o[k%t].push(v)});return o.map(function(team,k){return '<div class="team-block"><strong>Team '+(k+1)+'</strong><span>'+team.map(esc).join(', ')+'</span></div>';}).join('');}},
+    whoGoesFirst:{title:'Who Goes First?',desc:'Choose a first player without taking turns.',render:function(){return field('Players','<textarea id="items" rows="6" placeholder="Alex\nSam\nJamie"></textarea>')},run:function(){var a=unique('items');if(!a.length)throw new Error('Add some players first.');return resultMain('🏁 '+esc(pick(a)));}},
+    yesOrNo:{title:'Yes or No',desc:'Ask a question and get an independently random yes/no result.',render:function(){var h=getHistory('yesno');return field('Question (optional)','<input id="question" type="text" placeholder="Should I order pizza tonight?">')+'<p class="control-help">Yes and No are selected independently each time. There is no alternating sequence.</p>'+historyHtml(h);},run:function(){var v=randomInt(0,1)===0?'Yes':'No',h=setHistory('yesno',v),q=(byId('question').value||'').trim();return (q?'<div class="question-preview">'+esc(q)+'</div>':'')+resultMain(v==='Yes'?'Yes ✅':'No ❌')+historyHtml(h);}},
+    randomMovie:{title:'Random Movie Picker',desc:'Pick a movie by genre.',render:function(){return field('Genre','<select id="genre"><option>Any</option><option>Action</option><option>Comedy</option><option>Family</option><option>SciFi</option><option>Mystery</option></select>')},run:function(){return resultMain('🎬 '+esc(pick(DATA.moviesByGenre[byId('genre').value]||DATA.movies)));}},
+    randomMeal:{title:'Random Meal Generator',desc:'Pick a meal by mood or type.',render:function(){return field('Type','<select id="type"><option>Any</option><option>Quick</option><option>Healthy</option><option>Comfort</option><option>International</option></select>')},run:function(){return resultMain('🍕 '+esc(pick(DATA.mealsByType[byId('type').value]||DATA.meals)));}},
+    randomChallenge:{title:'Random Challenge Generator',desc:'Choose a challenge by category.',render:function(){return field('Category','<select id="type"><option>Any</option><option>Quick</option><option>Creative</option><option>Social</option><option>Productivity</option></select>')},run:function(){return resultMain('🔥 '+esc(pick(DATA.challengesByType[byId('type').value]||DATA.challenges)));}},
+    randomGame:{title:'Random Game Picker',desc:'Pick a game for your group.',render:function(){return field('Players','<select id="players"><option>Any</option><option>2</option><option>3–5</option><option>6+</option></select>')},run:function(){return resultMain('🎮 '+esc(pick(DATA.games)));}},
+    randomDate:{title:'Random Date Generator',desc:'Generate an inclusive random date inside your range.',render:function(){return '<div class="date-grid"><div class="field"><label>From</label><input id="from" type="date"></div><div class="field"><label>To</label><input id="to" type="date"></div></div>'},run:function(){var from=byId('from'),to=byId('to'),n=new Date(),d=new Date(n);if(!from.value)from.value=n.toISOString().slice(0,10);if(!to.value){d.setFullYear(d.getFullYear()+1);to.value=d.toISOString().slice(0,10);}var a=new Date(from.value+'T12:00:00'),b=new Date(to.value+'T12:00:00');if(b<a)throw new Error('Choose a To date on or after the From date.');var days=Math.floor((b-a)/86400000);var r=new Date(a.getTime()+randomInt(0,days)*86400000);return resultMain(r.toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'}));}},
+    usernameGenerator:{title:'Username Generator',desc:'Use a theme to shape the actual words in your username.',render:function(){return field('Theme','<input id="theme" type="text" placeholder="gaming, space, football, anime, music..."><span class="field-hint">Try: gaming · space · football · anime · tech · cars · nature · music · dark · cute · travel · food</span>')+field('Separator','<select id="separator"><option value="">None</option><option value="_">Underscore</option><option value=".">Dot</option><option value="-">Dash</option></select>')+field('Add numbers','<select id="numbers"><option value="yes" selected>Yes</option><option value="no">No</option></select>')},run:function(){var u=makeUsername(byId('theme').value,byId('numbers').value==='yes',byId('separator').value);return resultMain(esc(u));}},
+    gamerNameGenerator:{title:'Gamer Name Generator',desc:'Generate a gamer tag with more control.',render:function(){return field('Style','<select id="style"><option>Any</option><option>Stealth</option><option>Competitive</option><option>Funny</option><option>Fantasy</option><option>Tech</option></select>')+field('Numbers','<select id="numbers"><option>Yes</option><option>No</option></select>')},run:function(){var styles={Any:DATA.gamerFirst,Stealth:['Shadow','Phantom','Rogue','Ghost','Night'],Competitive:['Turbo','Rapid','Blaze','Viper','Apex'],Funny:['Waffle','Pickle','Biscuit','Noodle','Taco'],Fantasy:['Dragon','Rune','Wizard','Raven','Mystic'],Tech:['Pixel','Cyber','Quantum','Byte','Glitch']};var u=pick(styles[byId('style').value]);u+=pick(DATA.gamerLast);if(byId('numbers').value==='Yes')u+=randomInt(10,999);return resultMain(esc(u));}},
+    teamNameGenerator:{title:'Team Name Generator',desc:'Build a team name around a style.',render:function(){return field('Style','<select id="style"><option>Powerful</option><option>Funny</option><option>Classic</option><option>Esports</option></select>')},run:function(){var suffix={Powerful:['Legends','Warriors','Titans','Guardians'],Funny:['Club','Crew','Squad','Bunch'],Classic:['United','Athletic','Rovers','City'],Esports:['GG','Gaming','Elite','X']};return resultMain(esc(pick(DATA.teamWords)+' '+pick(suffix[byId('style').value])));}},
+    fantasyNameGenerator:{title:'Fantasy Name Generator',desc:'Create a fantasy character name with style.',render:function(){return field('Style','<select id="style"><option>Any</option><option>Royal</option><option>Dark</option><option>Nature</option><option>Warrior</option></select>')},run:function(){var style=byId('style').value,pre=DATA.fantasyFirst,suf=DATA.fantasyLast,extra={Royal:['Elara','Isolde','Arwen','Seren'],Dark:['Nyx','Riven','Thorne','Vael'],Nature:['Elowen','Willow','Eira','Cael'],Warrior:['Dorian','Galen','Riven','Thorne']};if(extra[style])pre=extra[style];return resultMain(esc(pick(pre)+' '+pick(suf)));}},
+    petNameGenerator:{title:'Pet Name Generator',desc:'Find a pet name by vibe.',render:function(){return field('Vibe','<select id="vibe"><option>Cute</option><option>Funny</option><option>Classic</option><option>Cool</option></select>')},run:function(){var map={Cute:['Mochi','Cookie','Bubbles','Peach','Honey','Daisy'],Funny:['Pickle','Waffles','Noodle','Beans','Tater','Biscuit'],Classic:['Bella','Charlie','Max','Ruby','Buddy','Mabel'],Cool:['Loki','Nova','Pepper','Scout','Storm','Blue']};return resultMain(esc(pick(map[byId('vibe').value])));}},
+    partyGameGenerator:{title:'Party Game Generator',desc:'Choose something to play right now.',render:function(){return field('Group size','<select id="size"><option>Any</option><option>2–4</option><option>5–8</option><option>9+</option></select>')},run:function(){return resultMain('🎉 '+esc(pick(DATA.partyGames)));}},
+    secretSantaPicker:{title:'Secret Santa Picker',desc:'Assign people fairly without anyone drawing themselves.',render:function(){return field('Names','<textarea id="items" rows="10" placeholder="Alex\nSam\nJamie\nTaylor"></textarea>')},run:function(){var a=unique('items');if(a.length<2)throw new Error('Add at least two different names.');var targets,ok=false;for(var tries=0;tries<500&&!ok;tries++){targets=shuffle(a);ok=targets.every(function(v,i){return v!==a[i]});}if(!ok)throw new Error('Please try again.');return a.map(function(g,i){return '<div class="team-block"><strong>'+esc(g)+'</strong><span>→ '+esc(targets[i])+'</span></div>';}).join('');}},
+    couplesDecisionMaker:{title:'Couples Decision Maker',desc:'Let a fair random choice settle two options.',render:function(){return field('Option A','<input id="a" type="text" placeholder="Movie night">')+field('Option B','<input id="b" type="text" placeholder="Dinner out">')},run:function(){var a=byId('a').value.trim(),b=byId('b').value.trim();if(!a||!b)throw new Error('Enter both options first.');return resultMain('❤️ '+esc(pick([a,b])));}},
+    animals:{title:'Random Animal Generator',desc:'Pick an animal quickly.',render:function(){return '<p class="control-help">A quick picker for games, prompts and ideas.</p>';},run:function(){return resultMain('🐾 '+esc(pick(DATA.animals)));}}
   };
 
-  function adaptProjectLinks() {
-    if (location.hostname.indexOf('github.io') === -1 || location.pathname.indexOf('/randospino') !== 0) return;
-    var links = document.querySelectorAll('a[href^="/"]');
-    for (var i = 0; i < links.length; i++) {
-      var href = links[i].getAttribute('href');
-      if (href && href.indexOf('/randospino') !== 0) links[i].setAttribute('href', '/randospino' + href);
-    }
+  function adaptLinks() {
+    if (location.hostname.indexOf('github.io') < 0 || location.pathname.indexOf('/randospino') !== 0) return;
+    var links=document.querySelectorAll('a[href^="/"]');
+    for(var i=0;i<links.length;i++){var h=links[i].getAttribute('href');if(h&&h.indexOf('/randospino')!==0)links[i].setAttribute('href','/randospino'+h);}
   }
 
-  function copyTextFromResult(result) {
-    var text = result.textContent.trim();
-    if (!text || text === 'Ready when you are.') return;
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(text).then(function () { showCopyStatus(result, 'Copied!'); }).catch(function () { fallbackCopy(text, result); });
-    } else {
-      fallbackCopy(text, result);
-    }
-  }
-
-  function fallbackCopy(text, result) {
-    var area = document.createElement('textarea');
-    area.value = text;
-    area.style.position = 'fixed';
-    area.style.opacity = '0';
-    document.body.appendChild(area);
-    area.select();
-    try { document.execCommand('copy'); showCopyStatus(result, 'Copied!'); } catch (e) { showCopyStatus(result, 'Copy failed'); }
-    document.body.removeChild(area);
-  }
-
-  function showCopyStatus(result, message) {
-    var button = result.querySelector('.copy-result');
-    if (!button) return;
-    var original = button.getAttribute('data-original') || 'Copy result';
-    button.textContent = message;
-    setTimeout(function () { button.textContent = original; }, 1400);
-  }
-
-  function setOutput(result, html) {
-    result.className = 'result';
-    result.innerHTML = html + '<button class="copy-result" type="button" data-original="Copy result">Copy result</button>';
-    var copy = result.querySelector('.copy-result');
-    if (copy) copy.addEventListener('click', function () { copyTextFromResult(result); });
-  }
-
-  function setError(result, error) {
-    result.className = 'result';
-    result.innerHTML = '<div class="result-error">' + escapeHtml(error && error.message ? error.message : 'Something went wrong. Please try again.') + '</div>';
-  }
-
-  function renderWheel(items) {
-    var wrap = byId('wheel-wrap');
-    if (!wrap) return;
-    wrap.innerHTML = createWheelSvg(items);
-    var disc = byId('wheel-disc');
-    if (disc) disc.style.transform = 'rotate(0deg)';
-  }
-
-  function initWheel(runButton, result) {
-    var wheelItems = function () { var list = uniqueValues('items'); if (list.length < 2) throw new Error('Add at least two entries to spin the wheel.'); return list.slice(0, 24); };
-    var currentRotation = 0;
-    var spinning = false;
-
-    var input = byId('items');
-    if (input) input.addEventListener('input', function () {
-      var list = uniqueValues('items');
-      if (list.length >= 2) renderWheel(list.slice(0, 24));
-    });
-
-    runButton.addEventListener('click', function () {
-      if (spinning) return;
-      try {
-        var items = wheelItems();
-        var winnerIndex = randomInt(0, items.length - 1);
-        var disc = byId('wheel-disc');
-        if (!disc) throw new Error('The wheel could not be loaded. Please refresh the page.');
-        renderWheel(items);
-        disc = byId('wheel-disc');
-        var slice = 360 / items.length;
-        var centerAngle = (winnerIndex + 0.5) * slice;
-        var fullTurns = 6 + randomInt(0, 2);
-        var targetRotation = currentRotation + fullTurns * 360 + (360 - centerAngle);
-        spinning = true;
-        runButton.disabled = true;
-        disc.style.transition = 'transform 5s cubic-bezier(.12,.78,.16,1)';
-        disc.style.transform = 'rotate(' + targetRotation + 'deg)';
-        setTimeout(function () {
-          currentRotation = targetRotation;
-          spinning = false;
-          runButton.disabled = false;
-          setOutput(result, '<span class="wheel-winner">🎡 ' + escapeHtml(items[winnerIndex]) + '</span>');
-          var remove = byId('removeWinner');
-          if (remove && remove.checked) {
-            var updated = items.filter(function (item, index) { return index !== winnerIndex; });
-            if (updated.length >= 2) {
-              byId('items').value = updated.join('\n');
-              renderWheel(updated);
-            }
-          }
-        }, 5100);
-      } catch (error) {
-        setError(result, error);
-      }
-    });
+  function initWheel() {
+    var items=unique('items'),wrap=byId('wheel-wrap');if(!wrap||!items.length)return;
+    wrap.innerHTML=makeWheel(items);
+    var run=byId('run'); if(!run)return;
+    run.onclick=function(){
+      try{
+        var list=unique('items');if(list.length<2)throw new Error('Add at least two wheel entries.');
+        wrap.innerHTML=makeWheel(list);
+        var winnerIndex=randomInt(0,list.length-1), slice=360/list.length, turns=randomInt(5,8), target=turns*360 + (360-(winnerIndex+0.5)*slice);
+        var disc=byId('wheel-disc'); run.disabled=true;
+        disc.style.transition='transform 4.2s cubic-bezier(.12,.75,.18,1)'; disc.style.transform='rotate('+target+'deg)';
+        window.setTimeout(function(){run.disabled=false;var winner=list[winnerIndex];byId('result').innerHTML=resultMain('🎡 '+esc(winner))+'<button class="copy-result" type="button" data-copy="'+esc(winner)+'">Copy result</button>';if(byId('removeWinner').checked){var remain=list.filter(function(x,i){return i!==winnerIndex});byId('items').value=remain.join('\n');wrap.innerHTML=makeWheel(remain.length?remain:['Add entries']);}},4300);
+      }catch(e){byId('result').textContent=e.message||'Something went wrong.';byId('result').className='result result-error';}
+    };
+    byId('items').addEventListener('input',function(){var list=unique('items');if(list.length>=2)wrap.innerHTML=makeWheel(list);});
   }
 
   function init() {
-    adaptProjectLinks();
-    var key = document.body.getAttribute('data-tool');
-    var tool = TOOLS[key];
-    var title = byId('tool-title');
-    var desc = byId('tool-desc');
-    var controls = byId('controls');
-    var run = byId('run');
-    var result = byId('result');
-
-    if (!tool || !title || !desc || !controls || !run || !result) return;
-
-    title.textContent = tool.title;
-    desc.textContent = tool.desc;
-    controls.innerHTML = tool.render();
-
-    if (key === 'wheelSpinner') {
-      initWheel(run, result);
-      return;
-    }
-
-    run.addEventListener('click', function () {
-      try {
-        setOutput(result, tool.run());
-      } catch (error) {
-        setError(result, error);
-      }
-    });
+    adaptLinks();
+    var key=document.body.getAttribute('data-tool'),tool=TOOLS[key],title=byId('tool-title'),desc=byId('tool-desc'),controls=byId('controls'),run=byId('run'),result=byId('result');
+    if(!tool||!title||!desc||!controls||!run||!result)return;
+    title.textContent=tool.title;desc.textContent=tool.desc;controls.innerHTML=tool.render();
+    if(key==='wheelSpinner'){run.textContent='🎡 Spin the wheel';initWheel();return;}
+    run.onclick=function(){try{var output=tool.run();if(output!==undefined){result.className='result';result.innerHTML=output;bindCopy();}}catch(e){result.className='result result-error';result.textContent=e&&e.message?e.message:'Something went wrong. Please try again.';}};
+    bindCopy();
   }
-
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
-  else init();
-})();
+  function bindCopy(){var buttons=document.querySelectorAll('[data-copy]');for(var i=0;i<buttons.length;i++){buttons[i].onclick=function(){copyText(this.getAttribute('data-copy'));this.textContent='Copied ✓';var b=this;setTimeout(function(){b.textContent=b.getAttribute('data-copy');},900);};}}
+  document.addEventListener('DOMContentLoaded',init);
+}());
