@@ -11,103 +11,65 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
       - name: JavaScript syntax
         run: |
           set -e
-          for f in app.js data.js new-tools.js new-tools-extra.js more-tools.js home-v5.js home-v6.js home-v6-finish.js analytics.js wheel-fix.js wheel-v2.js; do
-            node --check "$f"
-          done
-
-      - name: Validate homepage tool routes
+          for f in app.js data.js new-tools.js new-tools-extra.js more-tools.js home-v5.js home-v6.js home-v6-finish.js analytics.js project-site-fix.js wheel-fix.js wheel-v2.js; do node --check "$f"; done
+      - name: Validate routes, sitemap, links and assets
         run: |
           python - <<'PY'
           from pathlib import Path
           import re
-          js = Path('home-v6.js').read_text(encoding='utf-8')
-          urls = re.findall(r"\['[^']+',\'([^']+)/\'", js)
-          missing = []
-          for url in urls:
-              p = Path(url.lstrip('./')) / 'index.html'
-              if not p.exists():
-                  missing.append(str(p))
-          if missing:
-              raise SystemExit('Homepage tools without pages: ' + ', '.join(missing))
-          print(f'Validated {len(urls)} homepage tool routes.')
-          PY
-
-      - name: Validate sitemap routes
-        run: |
-          python - <<'PY'
-          from pathlib import Path
-          import re
-          sitemap = Path('sitemap.xml').read_text(encoding='utf-8')
-          urls = re.findall(r'<loc>https://randospino\\.com(/[^<]*)</loc>', sitemap)
-          missing = []
-          for path in urls:
-              clean = path.rstrip('/')
-              target = Path('index.html') if clean == '' else Path(clean.lstrip('/')) / 'index.html'
-              if not target.exists():
-                  missing.append(str(target))
-          if missing:
-              raise SystemExit('Sitemap routes without pages: ' + ', '.join(missing))
-          print(f'Validated {len(urls)} sitemap routes.')
-          PY
-
-      - name: Validate page wiring and CSS
-        run: |
-          python - <<'PY'
-          from pathlib import Path
-          seo_pages = {
-              'random-picker-for-classroom/index.html','random-team-generator-for-work/index.html',
-              'random-picker-for-parties/index.html','random-wheel-for-students/index.html',
-              'random-game-generator/index.html','random-name-generators/index.html',
-              'random-team-generators/index.html','random-food-generators/index.html',
-              'random-decision-tools/index.html','random-party-games/index.html','random-wheel-spinner/index.html'
-          }
-          self_contained = {
-              'random-planet/index.html','random-element/index.html','random-era/index.html',
-              'random-activity/index.html','random-classroom-choice/index.html','random-food-ingredient/index.html'
-          }
-          for css in ('style.css','home-v3.css','home-v6-finish.css','wheel-v2.css'):
-              t = Path(css).read_text(encoding='utf-8')
-              if t.count('{') != t.count('}'):
-                  raise SystemExit(f'CSS brace mismatch: {css}')
-          homepage = Path('index.html').read_text(encoding='utf-8')
-          for required in ('analytics.js','home-v6.js','home-v6-finish.js','home-v6-finish.css'):
-              if required not in homepage:
-                  raise SystemExit(f'Homepage missing 2.0 asset: {required}')
-          pages = list(Path('.').glob('*/index.html'))
+          html=Path('index.html').read_text(encoding='utf-8')
+          homepage_routes=sorted(set(re.findall(r'href="\./([^"/#?]+)\/"',html)))
+          missing=[str(Path(p)/'index.html') for p in homepage_routes if not (Path(p)/'index.html').exists()]
+          if missing: raise SystemExit('Homepage tools without pages: '+', '.join(missing))
+          sitemap=Path('sitemap.xml').read_text(encoding='utf-8')
+          sitemap_paths=sorted(set(re.findall(r'<loc>https://[^<]+(/[^<]*)</loc>',sitemap)))
+          missing=[]
+          for path in sitemap_paths:
+              clean=path.rstrip('/')
+              target=Path('index.html') if clean=='' else Path(clean.lstrip('/'))/'index.html'
+              if not target.exists(): missing.append(str(target))
+          if missing: raise SystemExit('Sitemap routes without pages: '+', '.join(missing))
+          pages=list(Path('.').glob('*/index.html'))
+          bad_links=[]; bad_assets=[]
           for page in pages:
-              p = page.as_posix()
-              if p == 'privacy/index.html' or p in seo_pages:
-                  continue
-              html = page.read_text(encoding='utf-8')
-              if p in self_contained:
-                  if '<script>' not in html or 'addEventListener' not in html:
-                      raise SystemExit(f'Self-contained page missing inline generator: {page}')
-                  continue
-              if 'data-tool=' not in html:
-                  raise SystemExit(f'Missing data-tool: {page}')
-              if not any(x in html for x in ('../app.js','../new-tools.js','../new-tools-extra.js','../more-tools.js')):
-                  raise SystemExit(f'Missing engine script: {page}')
-          print(f'Validated {len(pages)} page documents.')
+              text=page.read_text(encoding='utf-8')
+              if 'href="/"' in text or 'href="/#' in text or 'src="/' in text: bad_links.append(page.as_posix())
+              for attr in ('src','href'):
+                  for value in re.findall(attr+r'="([^\"]+)"',text):
+                      if value.startswith('../'):
+                          clean=value.split('#',1)[0].split('?',1)[0]
+                          target=page.parent/clean
+                          if clean.endswith('/'): target=target/'index.html'
+                          if not target.exists(): bad_assets.append(f'{page.as_posix()}: {value}')
+          if bad_links: raise SystemExit('Nested pages contain root links: '+', '.join(bad_links))
+          if bad_assets: raise SystemExit('Missing local assets: '+', '.join(bad_assets))
+          print(f'Validated {len(homepage_routes)} homepage routes, {len(sitemap_paths)} sitemap routes and {len(pages)} nested pages.')
           PY
-
-      - name: Validate self-contained generators
+      - name: Validate wiring, CSS and self-contained generators
         run: |
-          set -e
           python - <<'PY'
           from pathlib import Path
-          required = [
-              'random-planet/index.html','random-element/index.html','random-era/index.html',
-              'random-activity/index.html','random-classroom-choice/index.html','random-food-ingredient/index.html'
-          ]
-          for filename in required:
-              text = Path(filename).read_text(encoding='utf-8')
-              if '<script>' not in text or 'addEventListener' not in text:
-                  raise SystemExit(f'Missing inline Generate handler: {filename}')
-              if 'crypto.getRandomValues' not in text:
-                  raise SystemExit(f'Missing secure randomness: {filename}')
-          print('Validated self-contained generator pages.')
+          seo={'random-picker-for-classroom/index.html','random-team-generator-for-work/index.html','random-picker-for-parties/index.html','random-wheel-for-students/index.html','random-game-generator/index.html','random-name-generators/index.html','random-team-generators/index.html','random-food-generators/index.html','random-decision-tools/index.html','random-party-games/index.html','random-wheel-spinner/index.html'}
+          selfc={'wheel-spinner/index.html','random-planet/index.html','random-element/index.html','random-era/index.html','random-activity/index.html','random-classroom-choice/index.html','random-food-ingredient/index.html'}
+          for css in ('style.css','home-v3.css','home-v6-finish.css','wheel-v2.css'):
+              t=Path(css).read_text(encoding='utf-8')
+              if t.count('{')!=t.count('}'): raise SystemExit(f'CSS brace mismatch: {css}')
+          home=Path('index.html').read_text(encoding='utf-8')
+          for required in ('analytics.js','home-v6.js','home-v6-finish.js','home-v6-finish.css'):
+              if required not in home: raise SystemExit(f'Homepage missing asset: {required}')
+          for page in Path('.').glob('*/index.html'):
+              p=page.as_posix(); text=page.read_text(encoding='utf-8')
+              if p=='privacy/index.html' or p in seo: continue
+              if p in selfc:
+                  if '<script>' not in text or 'addEventListener' not in text or 'crypto.getRandomValues' not in text: raise SystemExit(f'Self-contained generator validation failed: {page}')
+              else:
+                  if 'data-tool=' not in text: raise SystemExit(f'Missing data-tool: {page}')
+                  if not any(x in text for x in ('../app.js','../new-tools.js','../new-tools-extra.js','../more-tools.js')): raise SystemExit(f'Missing generator engine: {page}')
+          wheel=Path('wheel-spinner/index.html').read_text(encoding='utf-8')
+          for marker in ('id="wheelItems"','id="wheelCanvas"','id="spinWheel"','margin-top:8px','crypto.getRandomValues'):
+              if marker not in wheel: raise SystemExit(f'Wheel Spinner missing: {marker}')
+          print('Validated page wiring, CSS, self-contained generators and Wheel Spinner.')
           PY
