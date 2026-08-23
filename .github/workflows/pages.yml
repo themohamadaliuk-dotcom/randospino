@@ -25,6 +25,17 @@ jobs:
         uses: actions/checkout@v4
       - name: Configure Pages
         uses: actions/configure-pages@v5
+      - name: Normalize project-site navigation
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          for page in Path('.').glob('*/index.html'):
+              text = page.read_text(encoding='utf-8')
+              text = text.replace('href="/#', 'href="../#')
+              text = text.replace('href="/"', 'href="../"')
+              page.write_text(text, encoding='utf-8')
+          print('Normalized nested-page Home/navigation links for GitHub Pages project hosting.')
+          PY
       - name: Upload site artifact
         uses: actions/upload-pages-artifact@v3
         with:
