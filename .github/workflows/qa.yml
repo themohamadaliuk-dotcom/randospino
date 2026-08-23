@@ -15,7 +15,7 @@ jobs:
       - name: JavaScript syntax
         run: |
           set -e
-          for f in app.js data.js new-tools.js more-tools.js home-v5.js; do node --check "$f"; done
+          for f in app.js data.js new-tools.js new-tools-extra.js more-tools.js home-v5.js; do node --check "$f"; done
 
       - name: Validate homepage tool routes
         run: |
@@ -56,7 +56,6 @@ jobs:
         run: |
           python - <<'PY'
           from pathlib import Path
-          import re
           for css in ('style.css','home-v3.css'):
               t = Path(css).read_text(encoding='utf-8')
               if t.count('{') != t.count('}'):
@@ -68,7 +67,7 @@ jobs:
               html = page.read_text(encoding='utf-8')
               if 'data-tool=' not in html:
                   raise SystemExit(f'Missing data-tool: {page}')
-              if not any(x in html for x in ('../app.js','../new-tools.js','../more-tools.js')):
+              if not any(x in html for x in ('../app.js','../new-tools.js','../new-tools-extra.js','../more-tools.js')):
                   raise SystemExit(f'Missing engine script: {page}')
           print(f'Validated {len(pages)} tool/page documents.')
           PY
