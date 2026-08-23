@@ -16,9 +16,11 @@ jobs:
         shell: bash
         run: |
           set -e
-          for f in app.js data.js home-v3.js home-v4.js new-tools.js more-tools.js; do node --check "$f"; done
+          for f in app.js data.js home-v3.js home-v4.js new-tools.js more-tools.js; do
+            node --check "$f"
+          done
 
-      - name: Check site structure
+      - name: Check site structure and sitemap
         shell: bash
         run: |
           set -e
@@ -33,7 +35,27 @@ jobs:
           test -f style.css
           test -f robots.txt
           test -f sitemap.xml
-          find . -mindepth 2 -maxdepth 2 -name index.html -print | sort
+
+          python - <<'PY'
+          from pathlib import Path
+          import re
+
+          sitemap = Path('sitemap.xml').read_text(encoding='utf-8')
+          urls = re.findall(r'<loc>https://randospino\.com(/[^<]*)</loc>', sitemap)
+          if not urls:
+              raise SystemExit('Sitemap contains no randospino.com URLs')
+
+          missing = []
+          for path in urls:
+              clean = path.rstrip('/')
+              target = Path('index.html') if clean == '' else Path(clean.lstrip('/')) / 'index.html'
+              if not target.exists():
+                  missing.append(str(target))
+          if missing:
+              raise SystemExit('Sitemap routes without matching pages: ' + ', '.join(missing))
+
+          print(f'Validated {len(urls)} sitemap URLs against the repository.')
+          PY
 
       - name: Check CSS, routes and tool wiring
         run: |
@@ -54,9 +76,24 @@ jobs:
           if missing:
               raise SystemExit(f'Missing expected core tool implementations: {sorted(missing)}')
 
+          lightweight_engines = {
+              'new-tools.js': Path('new-tools.js').read_text(encoding='utf-8'),
+              'more-tools.js': Path('more-tools.js').read_text(encoding='utf-8'),
+          }
+          for engine, text in lightweight_engines.items():
+              if 'crypto.getRandomValues' not in text:
+                  raise SystemExit(f'{engine} is missing secure randomness')
+              if 'pickFresh' not in text:
+                  raise SystemExit(f'{engine} is missing recent-result variety logic')
+
           pages = list(Path('.').glob('*/index.html'))
           if not pages:
               raise SystemExit('No pages found')
+
+          lightweight_keys = set()
+          for text in lightweight_engines.values():
+              lightweight_keys.update(re.findall(r'(random[A-Za-z0-9]+):\[', text))
+
           for page in pages:
               html = page.read_text(encoding='utf-8')
               if page.as_posix() == 'privacy/index.html':
@@ -64,12 +101,36 @@ jobs:
               match = re.search(r'data-tool="([A-Za-z0-9]+)"', html)
               if not match:
                   raise SystemExit(f'Missing data-tool in {page}')
+              key = match.group(1)
               engine_ok = ('../app.js' in html or '../new-tools.js' in html or '../more-tools.js' in html)
               if not engine_ok:
                   raise SystemExit(f'Missing JS engine include in {page}')
               if '../new-tools.js' in html or '../more-tools.js' in html:
-                  if not ('<h1' in html and 'id="result"' in html and 'id="run"' in html):
-                      raise SystemExit(f'Incomplete lightweight tool page: {page}')
+                  if key not in lightweight_keys:
+                      raise SystemExit(f'No lightweight tool mapping for {key} in {page}')
+                  for required_marker in ('id="tool-title"','id="tool-desc"','id="run"','id="result"'):
+                      if required_marker not in html:
+                          raise SystemExit(f'Missing {required_marker} in {page}')
 
           print(f'Checked {len(pages)} pages and {len(keys)} core tool implementations.')
+          PY
+
+      - name: Check generator data has useful breadth
+        run: |
+          set -e
+          python - <<'PY'
+          from pathlib import Path
+          import re
+
+          for filename in ('new-tools.js','more-tools.js'):
+              text = Path(filename).read_text(encoding='utf-8')
+              lists = re.findall(r'([A-Za-z]+):\[(.*?)\]', text)
+              small = []
+              for name, body in lists:
+                  count = len(re.findall(r"'(?:[^'\\]|\\.)*'", body))
+                  if count < 5 and name not in {'months','days','seasons','continents','zodiac','birthstones','planets'}:
+                      small.append((name, count))
+              if small:
+                  raise SystemExit(f'{filename} contains suspiciously small generator pools: {small}')
+          print('Generator pool breadth checks passed.')
           PY
