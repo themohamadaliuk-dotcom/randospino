@@ -1,0 +1,18 @@
+@media (max-width:760px){
+  html,body{width:100%;max-width:100%;overflow-x:hidden}
+  body{margin:0;background-clip:border-box}
+  .site-header{margin-top:0!important;padding-top:0!important}
+  .nav-wrap{width:100%;max-width:100%;min-width:0;padding-left:14px;padding-right:14px}
+  .brand{min-width:0}
+  .brand span:last-child{white-space:nowrap}
+  main,.v3-discovery,.section,.section.alt,.cta{width:100%;max-width:100%;min-width:0}
+  .v3-discovery{padding-left:16px!important;padding-right:16px!important;overflow:hidden}
+  .v3-directory{width:100%;max-width:100%;min-width:0;grid-template-columns:minmax(0,1fr)!important;overflow:hidden}
+  .v3-card,.v3-card-top,.tool-card{min-width:0;max-width:100%}
+  .v3-card *,.tool-card *{max-width:100%;overflow-wrap:anywhere}
+  #v3-tools,.v3-utilities,#v3-search-results,#v3-search-results .search-results-grid{width:100%;max-width:100%;min-width:0}
+  .v3-mini-grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important}
+  .v6-for{width:100%;max-width:100%;min-width:0;overflow:hidden}
+  .v6-for-grid{width:100%;max-width:100%;grid-template-columns:minmax(0,1fr)!important}
+  .v6-for-card,.v6-for-links{min-width:0;max-width:100%}
+}
