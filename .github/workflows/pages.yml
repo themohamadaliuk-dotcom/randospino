@@ -29,14 +29,18 @@ jobs:
         run: |
           python - <<'PY'
           from pathlib import Path
-          for page in Path('.').glob('*/index.html'):
+          for page in [Path('index.html'), *Path('.').glob('*/index.html')]:
               text = page.read_text(encoding='utf-8')
-              text = text.replace('href="/#', 'href="../#')
-              text = text.replace('href="/"', 'href="../"')
+              if page.as_posix() == 'index.html':
+                  text = text.replace('</head>', '<script src="./project-site-fix.js?v=2" defer></script></head>', 1)
+              else:
+                  text = text.replace('href="/#', 'href="../#')
+                  text = text.replace('href="/"', 'href="../"')
+                  text = text.replace('</head>', '<script src="../project-site-fix.js?v=2" defer></script></head>', 1)
               if page.as_posix() == 'wheel-spinner/index.html':
                   text = text.replace('../wheel-v2.css"', '../wheel-v2.css?v=4"')
               page.write_text(text, encoding='utf-8')
-          print('Normalized nested-page navigation and cache-busted the wheel stylesheet.')
+          print('Normalized project-site navigation and injected the wheel/layout compatibility fix.')
           PY
       - name: Upload site artifact
         uses: actions/upload-pages-artifact@v3
