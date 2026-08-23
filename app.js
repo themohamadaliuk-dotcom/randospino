@@ -1,30 +1,56 @@
-const data={
- randomNumber:{title:'Random Number Generator',desc:'Pick a random number from your chosen range.',fields:[['min','Minimum','number','1'],['max','Maximum','number','100']],run(v){let a=Number(v.min),b=Number(v.max);if(a>b)[a,b]=[b,a];return Math.floor(Math.random()*(b-a+1))+a}},
- coinFlip:{title:'Coin Flip',desc:'Heads or tails? Let chance decide.',run(){return Math.random()<.5?'Heads':'Tails'}},
- diceRoller:{title:'Dice Roller',desc:'Roll classic dice instantly.',fields:[['count','Number of dice','number','2'],['sides','Sides per die','number','6']],run(v){let c=Math.max(1,Math.floor(Number(v.count)||1)),s=Math.max(2,Math.floor(Number(v.sides)||6)),r=Array.from({length:c},()=>Math.floor(Math.random()*s)+1);return `${r.join(' + ')} = ${r.reduce((a,b)=>a+b,0)}`}},
- randomName:{title:'Random Name Picker',desc:'Pick one name from a list.',fields:[['items','Names, one per line','textarea','Alex\nSam\nJordan\nTaylor']],run(v){let a=String(v.items).split(/\n|,/).map(x=>x.trim()).filter(Boolean);return a.length?a[Math.floor(Math.random()*a.length)]:'Add at least one name'}},
- randomWord:{title:'Random Word Generator',desc:'Get a simple surprise word.',run(){let a=['adventure','banana','comet','dream','festival','horizon','jungle','lantern','marble','ocean','puzzle','rainbow','rocket','sunrise','thunder'];return a[Math.floor(Math.random()*a.length)]}},
- randomCountry:{title:'Random Country Generator',desc:'Pick a country at random.',run(){let a=['Argentina','Australia','Brazil','Canada','Denmark','Egypt','France','Greece','India','Japan','Kenya','Mexico','Norway','Spain','Thailand','United Kingdom','United States','Vietnam'];return a[Math.floor(Math.random()*a.length)]}},
- randomColour:{title:'Random Colour Generator',desc:'Generate a random colour and hex code.',run(){let h='#'+Math.floor(Math.random()*16777215).toString(16).padStart(6,'0');return `<span style="display:inline-flex;align-items:center;gap:12px"><i style="width:34px;height:34px;border-radius:10px;background:${h};display:inline-block"></i>${h}</span>`}},
- randomTeam:{title:'Random Team Picker',desc:'Split names into random teams.',fields:[['items','Names, one per line','textarea','Alex\nSam\nJordan\nTaylor\nMia\nChris'],['teams','Number of teams','number','2']],run(v){let a=String(v.items).split(/\n|,/).map(x=>x.trim()).filter(Boolean).sort(()=>Math.random()-.5),n=Math.max(2,Math.floor(Number(v.teams)||2)),t=Array.from({length:n},()=>[]);a.forEach((x,i)=>t[i%n].push(x));return t.map((g,i)=>`<div><b>Team ${i+1}</b>: ${g.join(', ')||'—'}</div>`).join('')}},
- randomPicker:{title:'Random Picker',desc:'Paste a list and let RandoSpino choose one.',fields:[['items','Options, one per line','textarea','Pizza\nBurger\nTacos\nSushi']],run(v){let a=String(v.items).split(/\n|,/).map(x=>x.trim()).filter(Boolean);return a.length?a[Math.floor(Math.random()*a.length)]:'Add at least one option'}},
- wheelSpinner:{title:'Wheel Spinner',desc:'Create a simple wheel-style random picker.',fields:[['items','Wheel entries, one per line','textarea','Movie\nMeal\nGame\nSurprise']],run(v){let a=String(v.items).split(/\n|,/).map(x=>x.trim()).filter(Boolean);return a.length?`🎡 ${a[Math.floor(Math.random()*a.length)]}`:'Add at least one entry'}},
- whoGoesFirst:{title:'Who Goes First?',desc:'Enter names and let chance choose the first player.',fields:[['items','Names, one per line','textarea','Alex\nSam\nJordan']],run(v){let a=String(v.items).split(/\n|,/).map(x=>x.trim()).filter(Boolean);return a.length?`🏁 ${a[Math.floor(Math.random()*a.length)]} goes first!`:'Add some names'}},
- yesOrNo:{title:'Yes or No Generator',desc:'Ask a question and let chance break the tie.',run(){return Math.random()<.5?'Yes':'No'}},
- randomMovie:{title:'Random Movie Picker',desc:'Choose a movie vibe and get a suggestion.',fields:[['genre','Genre','select','Any']],run(v){const m={Any:['The Dark Knight','Back to the Future','Knives Out','The Grand Budapest Hotel','Interstellar'],Comedy:['Hot Fuzz','Groundhog Day','School of Rock'],Action:['Mad Max: Fury Road','The Matrix','Top Gun: Maverick'],Drama:['Whiplash','The Shawshank Redemption','Good Will Hunting']};let a=m[v.genre]||m.Any;return a[Math.floor(Math.random()*a.length)]},options:['Any','Comedy','Action','Drama']},
- randomMeal:{title:'Random Meal Picker',desc:'Let RandoSpino decide what you eat.',run(){let a=['Pizza','Tacos','Curry','Pasta','Burgers','Sushi','Stir-fry','Roast dinner','Ramen','Salad bowls'];return a[Math.floor(Math.random()*a.length)]}},
- randomChallenge:{title:'Random Challenge Generator',desc:'Get a fun challenge to try.',run(){let a=['Try a new food','Do 20 squats','Go for a 20-minute walk','Call a friend','Learn a new word','Take a photo of something blue','Do 10 minutes of stretching','Write a silly story'];return a[Math.floor(Math.random()*a.length)]}},
- randomGame:{title:'Random Game Picker',desc:'Pick a game for your group.',run(){let a=['Charades','Pictionary','20 Questions','UNO','Cards','Trivia','Hide and Seek','Would You Rather','Heads Up','Monopoly'];return a[Math.floor(Math.random()*a.length)]}},
- usernameGenerator:{title:'Username Generator',desc:'Generate a simple username idea.',fields:[['word','Optional word','text',''],['style','Style','select','Cool']],run(v){let a=['pixel','rocket','cosmic','shadow','rapid','neon','mango','orbit','nova','frost'],b=v.word.trim()||a[Math.floor(Math.random()*a.length)],n=Math.floor(Math.random()*9999);return `${b}${n}`},options:['Cool','Simple','Funny']},
- gamerNameGenerator:{title:'Gamer Name Generator',desc:'Find a fresh gamer-name idea.',run(){let a=['NeonRaptor','PixelPhantom','TurboNova','ShadowOrbit','FrostByte','RapidViper','GhostRocket','CyberComet','ZeroLag','NightGlitch'];return a[Math.floor(Math.random()*a.length)]}},
- teamNameGenerator:{title:'Team Name Generator',desc:'Generate a name for your squad.',run(){let a=['The Wildcards','Chaos Crew','The Mavericks','Lucky Legends','The Underdogs','Pixel Pack','The Dream Team','Rapid Rockets','The Powerhouse','No Rules'];return a[Math.floor(Math.random()*a.length)]}},
- fantasyNameGenerator:{title:'Fantasy Name Generator',desc:'Generate a fantasy character name.',run(){let a=['Elaria Nightbloom','Kael Stormrider','Thalia Mooncrest','Orin Emberfall','Lyra Starveil','Darius Frostmere','Seraphine Dawnfire','Rowan Ironwood'];return a[Math.floor(Math.random()*a.length)]}},
- petNameGenerator:{title:'Pet Name Generator',desc:'Find a cute name for a new pet.',run(){let a=['Mochi','Biscuit','Luna','Milo','Pepper','Maple','Coco','Teddy','Nala','Toffee'];return a[Math.floor(Math.random()*a.length)]}},
- partyGameGenerator:{title:'Party Game Generator',desc:'Pick a game everyone can play.',run(){let a=['Charades','Two Truths and a Lie','Musical Freeze','Human Bingo','Heads Up','Trivia Battle','Mafia','Categories','Pictionary'];return a[Math.floor(Math.random()*a.length)]}},
- secretSantaPicker:{title:'Secret Santa Picker',desc:'Make a simple fair draw from a list.',fields:[['items','People, one per line','textarea','Alex\nSam\nJordan\nTaylor']],run(v){let a=String(v.items).split(/\n|,/).map(x=>x.trim()).filter(Boolean);if(a.length<2)return'Add at least 2 people';let s=[...a].sort(()=>Math.random()-.5);if(s.some((x,i)=>x===a[i]))return this.run(v);return s.map((x,i)=>`${a[i]} → ${x}`).join('<br>')}},
- couplesDecisionMaker:{title:'Couples Decision Maker',desc:'Let chance settle the little things.',fields:[['a','Option A','text','You choose the movie'],['b','Option B','text','I choose the movie']],run(v){return Math.random()<.5?v.a:v.b}},
- randomDate:{title:'Random Date Generator',desc:'Generate a date between two dates.',fields:[['from','From','date',''],['to','To','date','']],run(v){let a=new Date(v.from||new Date().toISOString().slice(0,10)),b=new Date(v.to||new Date(Date.now()+31536000000).toISOString().slice(0,10));if(a>b)[a,b]=[b,a];let d=new Date(a.getTime()+Math.random()*(b.getTime()-a.getTime()));return d.toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'})}}
+const TOOLS = {
+  randomNumber: {
+    title: 'Random Number Generator',
+    desc: 'Pick a random whole number between two limits.',
+    render() {
+      return `
+        <label>Minimum<input id="min" type="number" value="1"></label>
+        <label>Maximum<input id="max" type="number" value="100"></label>`;
+    },
+    run() {
+      const min = Number(document.getElementById('min').value);
+      const max = Number(document.getElementById('max').value);
+      if (!Number.isFinite(min) || !Number.isFinite(max) || max < min) return 'Choose a valid range.';
+      return String(Math.floor(Math.random() * (max - min + 1)) + min);
+    }
+  },
+  coinFlip: { title: 'Coin Flip', desc: 'Flip a virtual coin instantly.', render(){ return ''; }, run(){ return Math.random() < 0.5 ? 'Heads' : 'Tails'; } },
+  diceRoller: {
+    title: 'Dice Roller', desc: 'Roll one or more standard six-sided dice.',
+    render(){ return `<label>Number of dice<input id="count" type="number" value="1" min="1" max="20"></label>`; },
+    run(){ const n=Math.min(20,Math.max(1,parseInt(document.getElementById('count').value,10)||1)); const rolls=Array.from({length:n},()=>Math.floor(Math.random()*6)+1); return `${rolls.join(' + ')} = ${rolls.reduce((a,b)=>a+b,0)}`; }
+  },
+  randomPicker: {
+    title:'Random Picker', desc:'Enter a list of choices and let chance pick one.',
+    render(){ return `<label>Choices<textarea id="items" rows="7" placeholder="Pizza\nBurger\nPasta"></textarea></label>`; },
+    run(){ const items=document.getElementById('items').value.split(/\n|,/).map(x=>x.trim()).filter(Boolean); return items.length?items[Math.floor(Math.random()*items.length)]:'Add at least two choices.'; }
+  },
+  randomName:{ title:'Random Name Generator',desc:'Pick a random first name.',render(){return '';},run(){const n=['Alex','Ava','Charlie','Emily','Harry','Isla','Jack','Liam','Mia','Noah','Olivia','Oscar','Sophie','Theo','Zoe'];return n[Math.floor(Math.random()*n.length)];}},
+  randomWord:{ title:'Random Word Generator',desc:'Get a random everyday word.',render(){return '';},run(){const n=['adventure','bright','courage','forest','journey','kindness','moment','ocean','puzzle','spark','sunshine','wander','wonder','rhythm','discovery'];return n[Math.floor(Math.random()*n.length)];}},
+  randomCountry:{ title:'Random Country Generator',desc:'Spin the globe and see where you land.',render(){return '';},run(){const n=['Australia','Brazil','Canada','Egypt','France','Greece','India','Italy','Japan','Kenya','Mexico','Norway','Spain','Thailand','United Kingdom'];return n[Math.floor(Math.random()*n.length)];}},
+  randomColour:{ title:'Random Colour Generator',desc:'Generate a random colour and HEX code.',render(){return '';},run(){const h=Math.floor(Math.random()*0x1000000).toString(16).padStart(6,'0');return `<span class="colour-result"><i style="background:#${h}"></i><b>#${h.toUpperCase()}</b></span>`;}},
+  randomTeam:{ title:'Random Team Generator',desc:'Split names into fair random teams.',render(){return `<label>Names<textarea id="items" rows="7" placeholder="Alex\nSam\nJamie\nTaylor"></textarea></label><label>Teams<input id="teams" type="number" value="2" min="2" max="10"></label>`;},run(){const items=document.getElementById('items').value.split(/\n|,/).map(x=>x.trim()).filter(Boolean);const t=Math.min(10,Math.max(2,parseInt(document.getElementById('teams').value,10)||2));if(items.length<t)return'Add at least as many names as teams.';for(let i=items.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[items[i],items[j]]=[items[j],items[i]];}const out=Array.from({length:t},()=>[]);items.forEach((x,i)=>out[i%t].push(x));return out.map((a,i)=>`<strong>Team ${i+1}</strong><div>${a.join(', ')}</div>`).join('<br>');}},
+  whoGoesFirst:{ title:'Who Goes First?',desc:'Choose a first player fairly.',render(){return `<label>Names<textarea id="items" rows="6" placeholder="Alex\nSam\nJamie"></textarea></label>`;},run(){const a=document.getElementById('items').value.split(/\n|,/).map(x=>x.trim()).filter(Boolean);return a.length?a[Math.floor(Math.random()*a.length)]:'Add some names first.';}},
+  yesOrNo:{title:'Yes or No',desc:'Need a simple answer? Ask RandoSpino.',render(){return '';},run(){return Math.random()<0.5?'Yes':'No';}},
+  usernameGenerator:{title:'Username Generator',desc:'Create a memorable username in seconds.',render(){return '';},run(){const a=['Pixel','Lucky','Neon','Turbo','Cosmic','Mystic','Rapid','Shadow','Sunny','Rogue'];const b=['Fox','Panda','Tiger','Nova','Byte','Runner','Wizard','Spark','Otter','Ace'];return a[Math.floor(Math.random()*a.length)]+b[Math.floor(Math.random()*b.length)]+Math.floor(Math.random()*900+100);}},
+  wheelSpinner:{title:'Wheel Spinner',desc:'Turn any list into a spin-the-wheel style picker.',render(){return `<label>Wheel entries<textarea id="items" rows="7" placeholder="Pizza\nBurger\nPasta\nCurry"></textarea></label>`;},run(){const a=document.getElementById('items').value.split(/\n|,/).map(x=>x.trim()).filter(Boolean);return a.length?a[Math.floor(Math.random()*a.length)]:'Add entries to the wheel.';}}
 };
-function keyFromBody(){return document.body.dataset.tool}
-function renderTool(){let key=keyFromBody(),t=data[key];if(!t)return;document.title=`${t.title} | RandoSpino`;const title=document.querySelector('#tool-title');const desc=document.querySelector('#tool-desc');title.textContent=t.title;desc.textContent=t.desc;const controls=document.querySelector('#controls');(t.fields||[]).forEach(([name,label,type,placeholder],i)=>{let w=document.createElement('div');w.className='field';let l=document.createElement('label');l.textContent=label;w.appendChild(l);let el;if(type==='textarea'){el=document.createElement('textarea');el.rows=6}else if(type==='select'){el=document.createElement('select');(t.options||[]).forEach(o=>{let op=document.createElement('option');op.value=o;op.textContent=o;el.appendChild(op)})}else{el=document.createElement('input');el.type=type||'text'}el.name=name;if(placeholder)el.placeholder=placeholder;if(name==='from'&&!el.value)el.value=new Date().toISOString().slice(0,10);if(name==='to'&&!el.value)el.value=new Date(Date.now()+31536000000).toISOString().slice(0,10);w.appendChild(el);controls.appendChild(w)});const button=document.querySelector('#run');const result=document.querySelector('#result');const run=()=>{let v={};controls.querySelectorAll('[name]').forEach(e=>v[e.name]=e.value);result.innerHTML=`<strong>${t.run(v)}</strong>`};button.addEventListener('click',run);if(!t.fields)run()}
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',renderTool);else renderTool();
+
+function adaptProjectLinks(){
+  if(!location.hostname.endsWith('github.io') || !location.pathname.startsWith('/randospino')) return;
+  document.querySelectorAll('a[href^="/"]').forEach(a=>{
+    const href=a.getAttribute('href');
+    if(href && !href.startsWith('/randospino')) a.setAttribute('href','/randospino'+href);
+  });
+}
+
+document.addEventListener('DOMContentLoaded',()=>{
+  adaptProjectLinks();
+  const key=document.body.dataset.tool;
+  const tool=TOOLS[key];
+  if(!tool) return;
+  document.getElementById('tool-title').textContent=tool.title;
+  document.getElementById('tool-desc').textContent=tool.desc;
+  document.getElementById('controls').innerHTML=tool.render();
+  document.getElementById('run').addEventListener('click',()=>{document.getElementById('result').innerHTML=tool.run();});
+});
