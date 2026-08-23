@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="../style.css">
+  <title>Random Food Ingredient Generator | RandoSpino</title>
+</head>
+<body>
+  <main class="tool-page">
+    <div class="tool-header">
+      <span class="kicker">RANDOMISE</span>
+      <h1>Random Food Ingredient Generator</h1>
+      <p>Pick an ingredient to inspire your next meal.</p>
+    </div>
+    <section class="tool-shell">
+      <button id="run" class="action" type="button">Generate</button>
+      <div id="result" class="result"><strong>Ready when you are.</strong></div>
+    </section>
+    <p class="tool-note"><a href="../">← Back to RandoSpino</a></p>
+  </main>
+  <script>
+  (function(){
+    var ingredients=[
+      'Avocado','Basil','Beef','Bell pepper','Blueberry','Broccoli','Brown rice','Butter','Carrot','Cauliflower',
+      'Celery','Cheddar','Chicken','Chickpeas','Chilli','Cinnamon','Coconut milk','Courgette','Cucumber','Egg',
+      'Feta','Garlic','Ginger','Goat cheese','Honey','Lemon','Lentils','Lime','Mango','Mozzarella',
+      'Mushroom','Olive oil','Onion','Orange','Oregano','Parmesan','Peach','Peanut butter','Pear','Pineapple',
+      'Potato','Prawn','Pumpkin','Quinoa','Raspberry','Red onion','Salmon','Spinach','Strawberry','Sweet potato',
+      'Tomato','Tuna','Turkey','Vanilla','Walnut','Yoghurt','Zucchini','Coriander','Mint','Parsley',
+      'Black beans','Kidney beans','Sweetcorn','Cabbage','Leek','Peas','Asparagus','Green beans','Eggplant','Ricotta',
+      'Halloumi','Tofu','Tempeh','Sausage','Bacon','Ham','Pork','Lamb','Cod','Tuna steak',
+      'Couscous','Noodles','Pasta','Spaghetti','Basmati rice','Oats','Bread','Tortilla wrap','Pita bread','Breadcrumbs'
+    ];
+    var button=document.getElementById('run');
+    var result=document.getElementById('result');
+    function pick(){
+      if(window.crypto&&window.crypto.getRandomValues){
+        var a=new Uint32Array(1);
+        window.crypto.getRandomValues(a);
+        return ingredients[a[0]%ingredients.length];
+      }
+      return ingredients[Math.floor(Math.random()*ingredients.length)];
+    }
+    button.addEventListener('click',function(){
+      result.innerHTML='<div class="result-main">'+pick()+'</div>';
+    });
+  })();
+  </script>
+</body>
+</html>
