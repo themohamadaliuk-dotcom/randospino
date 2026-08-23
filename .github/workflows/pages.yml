@@ -34,19 +34,28 @@ jobs:
               text=page.read_text(encoding='utf-8')
               if page.as_posix()=='index.html':
                   text=text.replace('https://randospino.com/','https://themohamadaliuk-dotcom.github.io/randospino/')
-                  if 'project-site-fix.js' not in text:
-                      text=text.replace('</head>','<script src="./project-site-fix.js?v=3" defer></script></head>',1)
+                  injections=[
+                      '<link rel="stylesheet" href="./fun-background.css?v=1">',
+                      '<script src="./project-site-fix.js?v=3" defer></script>'
+                  ]
+                  for tag in injections:
+                      if tag not in text: text=text.replace('</head>',tag+'</head>',1)
               else:
                   text=text.replace('href="/#','href="../#').replace('href="/"','href="../"')
                   import re
                   route=page.parent.as_posix().strip('./')+'/'
-                  text=re.sub(r'<link([^>]+rel="canonical"[^>]+href=")[^"]+(")',lambda m:m.group(1)+base+route+m.group(2),text,flags=re.I)
-                  if 'project-site-fix.js' not in text:
-                      text=text.replace('</head>','<script src="../project-site-fix.js?v=3" defer></script></head>',1)
+                  text=re.sub(r'<link([^>]+rel="canonical"[^>]+href=")[^"]+(?)',lambda m:m.group(0),text)
+                  text=re.sub(r'(<link[^>]+rel="canonical"[^>]+href=")[^"]+(")',lambda m:m.group(1)+base+route+m.group(2),text,flags=re.I)
+                  injections=[
+                      '<link rel="stylesheet" href="../fun-background.css?v=1">',
+                      '<script src="../project-site-fix.js?v=3" defer></script>'
+                  ]
+                  for tag in injections:
+                      if tag not in text: text=text.replace('</head>',tag+'</head>',1)
                   if page.as_posix()=='wheel-spinner/index.html':
                       text=text.replace('../wheel-v2.css"','../wheel-v2.css?v=7"')
               page.write_text(text,encoding='utf-8')
-          print('Normalized project-site navigation, canonicals, compatibility scripts and wheel cache.')
+          print('Normalized project-site navigation, canonicals, background layer, compatibility scripts and wheel cache.')
           PY
       - name: Normalize sitemap and robots.txt to the live GitHub Pages URL
         run: |
