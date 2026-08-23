@@ -8,9 +8,11 @@
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="home-v3.css">
   <link rel="stylesheet" href="header-soften.css">
+  <link rel="stylesheet" href="home-v6-finish.css">
   <title>RandoSpino — Randomise It. Pick It. Decide It.</title>
   <script src="analytics.js" defer></script>
-  <script src="home-v6.js?v=1" defer></script>
+  <script src="home-v6.js?v=2" defer></script>
+  <script src="home-v6-finish.js?v=1" defer></script>
 </head>
 <body>
   <header class="site-header"><div class="nav-wrap">
@@ -25,60 +27,25 @@
       <div class="hero-actions"><a class="hero-btn" href="./random-picker/">🎲 Pick something for me</a><button class="hero-btn hero-btn-alt" id="surpriseBtn" type="button">✨ Surprise Me</button></div>
       <div class="hero-pills"><span>Free to use</span><span>No sign-up</span><span>Instant results</span><span>More tools arriving regularly</span></div>
     </section>
-
     <section class="v3-discovery section">
       <div class="v3-search-wrap">
-        <span class="kicker">FIND A TOOL</span>
-        <h2>What do you want to randomise?</h2>
+        <span class="kicker">FIND A TOOL</span><h2>What do you want to randomise?</h2>
         <div class="v3-search-box"><span>⌕</span><input id="v3-search" type="search" placeholder="Try football, dinner, names, games…" autocomplete="off"><strong id="v3-search-count"></strong></div>
         <div id="v3-search-results" class="v3-search-results" aria-live="polite"></div>
       </div>
       <div class="v3-utilities" id="v3-tools"></div>
       <button class="share-site" id="shareSite" type="button">↗ Share RandoSpino</button>
     </section>
-
-    <section class="section" id="random"><div class="section-head"><div><span class="kicker">RANDOM</span><h2>Randomise anything.</h2></div><p>Numbers, names, countries, colours and more.</p></div>
-      <div class="card-grid">
-        <a class="tool-card" href="./random-number/"><b>🎲 Random Number</b><span>Pick a random number from any range.</span></a>
-        <a class="tool-card" href="./coin-flip/"><b>🪙 Coin Flip</b><span>Heads or tails. No arguing.</span></a>
-        <a class="tool-card" href="./dice-roller/"><b>🎯 Dice Roller</b><span>Roll one die or a whole handful.</span></a>
-        <a class="tool-card" href="./random-name/"><b>👤 Random Name</b><span>Pick a name at random.</span></a>
-        <a class="tool-card" href="./random-word/"><b>🔤 Random Word</b><span>Get a surprise word instantly.</span></a>
-        <a class="tool-card" href="./random-country/"><b>🌍 Random Country</b><span>Spin the globe and see where you land.</span></a>
-        <a class="tool-card" href="./random-colour/"><b>🎨 Random Colour</b><span>Generate a random colour and hex code.</span></a>
-        <a class="tool-card" href="./random-team/"><b>👥 Random Team</b><span>Split names into fair random teams.</span></a>
-      </div>
-    </section>
-
-    <section class="section alt" id="decide"><div class="section-head"><div><span class="kicker">DECIDE</span><h2>Stop overthinking it.</h2></div><p>When there are too many choices, let chance break the tie.</p></div>
-      <div class="card-grid">
-        <a class="tool-card" href="./random-picker/"><b>🎲 Random Picker</b><span>Pick one item from your own list.</span></a>
-        <a class="tool-card" href="./wheel-spinner/"><b>🎡 Wheel Spinner</b><span>Turn any list into a spin-the-wheel game.</span></a>
-        <a class="tool-card" href="./who-goes-first/"><b>🏁 Who Goes First?</b><span>Choose a first player fairly.</span></a>
-        <a class="tool-card" href="./yes-or-no/"><b>✅ Yes or No</b><span>Need a simple answer? Ask RandoSpino.</span></a>
-        <a class="tool-card" href="./random-movie/"><b>🎬 Random Movie</b><span>Pick a movie suggestion.</span></a>
-        <a class="tool-card" href="./random-meal/"><b>🍕 Random Meal</b><span>Let chance decide what you're eating.</span></a>
-        <a class="tool-card" href="./random-challenge/"><b>🔥 Random Challenge</b><span>Get a fun challenge to try.</span></a>
-        <a class="tool-card" href="./random-game/"><b>🎮 Random Game</b><span>Pick a game for your group.</span></a>
-      </div>
-    </section>
-
-    <section class="section" id="generate"><div class="section-head"><div><span class="kicker">GENERATE</span><h2>Make something fun.</h2></div><p>Names, ideas, teams and more.</p></div>
-      <div class="card-grid">
-        <a class="tool-card" href="./username-generator/"><b>✨ Username Generator</b><span>Create memorable usernames in seconds.</span></a>
-        <a class="tool-card" href="./gamer-name-generator/"><b>🎮 Gamer Name Generator</b><span>Find a new gaming handle.</span></a>
-        <a class="tool-card" href="./team-name-generator/"><b>🏆 Team Name Generator</b><span>Instant names for your squad.</span></a>
-        <a class="tool-card" href="./fantasy-name-generator/"><b>🧙 Fantasy Name Generator</b><span>Characters, kingdoms, creatures and more.</span></a>
-        <a class="tool-card" href="./pet-name-generator/"><b>🐾 Pet Name Generator</b><span>Find a name for your new best friend.</span></a>
-        <a class="tool-card" href="./party-game-generator/"><b>🎉 Party Game Generator</b><span>Pick a game everyone can play.</span></a>
-        <a class="tool-card" href="./secret-santa-picker/"><b>🎁 Secret Santa Picker</b><span>Make a fair Secret Santa draw.</span></a>
-        <a class="tool-card" href="./couples-decision-maker/"><b>❤️ Couples Decision Maker</b><span>Let RandoSpino settle the little things.</span></a>
-        <a class="tool-card" href="./random-date/"><b>📅 Random Date</b><span>Generate a random date within a range.</span></a>
-      </div>
-    </section>
-
+    <section class="section" id="random"><div class="section-head"><div><span class="kicker">RANDOM</span><h2>Randomise anything.</h2></div><p>Numbers, names, countries, colours and more.</p></div><div class="card-grid">
+      <a class="tool-card" href="./random-number/"><b>🎲 Random Number</b><span>Pick a random number from any range.</span></a><a class="tool-card" href="./coin-flip/"><b>🪙 Coin Flip</b><span>Heads or tails. No arguing.</span></a><a class="tool-card" href="./dice-roller/"><b>🎯 Dice Roller</b><span>Roll one die or a whole handful.</span></a><a class="tool-card" href="./random-name/"><b>👤 Random Name</b><span>Pick a name at random.</span></a><a class="tool-card" href="./random-word/"><b>🔤 Random Word</b><span>Get a surprise word instantly.</span></a><a class="tool-card" href="./random-country/"><b>🌍 Random Country</b><span>Spin the globe and see where you land.</span></a><a class="tool-card" href="./random-colour/"><b>🎨 Random Colour</b><span>Generate a random colour and hex code.</span></a><a class="tool-card" href="./random-team/"><b>👥 Random Team</b><span>Split names into fair random teams.</span></a>
+    </div></section>
+    <section class="section alt" id="decide"><div class="section-head"><div><span class="kicker">DECIDE</span><h2>Stop overthinking it.</h2></div><p>When there are too many choices, let chance break the tie.</p></div><div class="card-grid">
+      <a class="tool-card" href="./random-picker/"><b>🎲 Random Picker</b><span>Pick one item from your own list.</span></a><a class="tool-card" href="./wheel-spinner/"><b>🎡 Wheel Spinner</b><span>Turn any list into a spin-the-wheel game.</span></a><a class="tool-card" href="./who-goes-first/"><b>🏁 Who Goes First?</b><span>Choose a first player fairly.</span></a><a class="tool-card" href="./yes-or-no/"><b>✅ Yes or No</b><span>Need a simple answer? Ask RandoSpino.</span></a><a class="tool-card" href="./random-movie/"><b>🎬 Random Movie</b><span>Pick a movie suggestion.</span></a><a class="tool-card" href="./random-meal/"><b>🍕 Random Meal</b><span>Let chance decide what you're eating.</span></a><a class="tool-card" href="./random-challenge/"><b>🔥 Random Challenge</b><span>Get a fun challenge to try.</span></a><a class="tool-card" href="./random-game/"><b>🎮 Random Game</b><span>Pick a game for your group.</span></a>
+    </div></section>
+    <section class="section" id="generate"><div class="section-head"><div><span class="kicker">GENERATE</span><h2>Make something fun.</h2></div><p>Names, ideas, teams and more.</p></div><div class="card-grid">
+      <a class="tool-card" href="./username-generator/"><b>✨ Username Generator</b><span>Create memorable usernames in seconds.</span></a><a class="tool-card" href="./gamer-name-generator/"><b>🎮 Gamer Name Generator</b><span>Find a new gaming handle.</span></a><a class="tool-card" href="./team-name-generator/"><b>🏆 Team Name Generator</b><span>Instant names for your squad.</span></a><a class="tool-card" href="./fantasy-name-generator/"><b>🧙 Fantasy Name Generator</b><span>Characters, kingdoms, creatures and more.</span></a><a class="tool-card" href="./pet-name-generator/"><b>🐾 Pet Name Generator</b><span>Find a name for your new best friend.</span></a><a class="tool-card" href="./party-game-generator/"><b>🎉 Party Game Generator</b><span>Pick a game everyone can play.</span></a><a class="tool-card" href="./secret-santa-picker/"><b>🎁 Secret Santa Picker</b><span>Make a fair Secret Santa draw.</span></a><a class="tool-card" href="./couples-decision-maker/"><b>❤️ Couples Decision Maker</b><span>Let RandoSpino settle the little things.</span></a><a class="tool-card" href="./random-date/"><b>📅 Random Date</b><span>Generate a random date within a range.</span></a>
+    </div></section>
     <section class="section alt" id="explore"><div class="section-head"><div><span class="kicker">EXPLORE</span><h2>Everything in one place.</h2></div><p>Search, favourite and revisit the tools you love.</p></div><div class="v3-directory" id="v3-directory"></div></section>
-
     <section class="cta"><h2>Built for the moments when you just can't choose.</h2><p>Use RandoSpino for games, parties, classrooms, teams, couples or your next random idea.</p><div class="hero-actions"><a class="hero-btn dark" href="./random-picker/">Start picking →</a><button class="hero-btn dark" id="surpriseBtn2" type="button">✨ Surprise me</button></div></section>
   </main>
   <footer><div class="footer-wrap"><div><a class="brand footer-brand" href="./"><span class="brand-mark">R</span><span>RandoSpino</span></a><p>Randomise it. Pick it. Decide it.</p></div><div class="footer-links"><a href="#random">Random</a><a href="#decide">Decide</a><a href="#generate">Generate</a><a href="#explore">Explore</a><a href="./privacy/">Privacy</a></div></div><div class="footer-bottom">© 2026 RandoSpino. Built for fun.</div></footer>
