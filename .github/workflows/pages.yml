@@ -40,7 +40,8 @@ jobs:
                       '<link rel="stylesheet" href="./rando-v1.css?v=1">',
                       '<script src="./project-site-fix.js?v=3" defer></script>',
                       '<script src="./rando-search-v1.js?v=1" defer></script>',
-                      '<script src="./rando-v1.js?v=1" defer></script>'
+                      '<script src="./rando-v1.js?v=1" defer></script>',
+                      '<script src="./rando-v1-fix.js?v=1" defer></script>'
                   ]
                   for tag in injections:
                       if tag not in text:
@@ -53,7 +54,8 @@ jobs:
                       '<link rel="stylesheet" href="../fun-background.css?v=1">',
                       '<link rel="stylesheet" href="../rando-v1.css?v=1">',
                       '<script src="../project-site-fix.js?v=3" defer></script>',
-                      '<script src="../rando-v1.js?v=1" defer></script>'
+                      '<script src="../rando-v1.js?v=1" defer></script>',
+                      '<script src="../rando-v1-fix.js?v=1" defer></script>'
                   ]
                   for tag in injections:
                       if tag not in text:
