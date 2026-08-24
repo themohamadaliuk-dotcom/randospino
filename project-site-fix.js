@@ -1,6 +1,6 @@
 (function(){
   'use strict';
-  var HOME='https://themohamadaliuk-dotcom.github.io/randospino/';
+  var HOME='/randospino/';
   var RELATED={
     'wheel-spinner':['random-picker','yes-or-no','random-game','random-meal'],
     'random-game':['party-game-generator','random-board-game','random-challenge','random-pokemon'],
@@ -19,9 +19,20 @@
   function injectStyles(){if(document.getElementById('rs-site-polish-style'))return;var s=document.createElement('style');s.id='rs-site-polish-style';s.textContent=''+
   '.rs-related{margin:28px 0 0;display:grid;gap:14px}.rs-related h2,.rs-create h2{margin:0;font-size:24px}.rs-related-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}.rs-related a,.rs-create a{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:14px 16px;border:1px solid #e6e6ef;border-radius:16px;background:#fff;text-decoration:none;color:#28293a;font-weight:800;box-shadow:0 10px 25px rgba(31,32,50,.05)}.rs-related a span{color:#716b9b;font-weight:900}.rs-create{margin:22px 0 0;padding:22px;border-radius:20px;background:linear-gradient(135deg,#f5f1ff,#fff2f7,#effffc);display:grid;gap:10px}.rs-create p,.rs-related p{margin:0;color:#707386}.rs-trust{margin:18px 0 0;color:#76798b;font-size:13px;text-align:center}.rs-result-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.rs-result-actions button{border:1px solid #ddd8f5;background:#fff;color:#5b4bc8;border-radius:999px;padding:9px 13px;font-size:12px;font-weight:900;cursor:pointer}.rs-recent{margin:20px 0 0;padding:18px;border-radius:18px;background:#fbfbff;border:1px solid #e9e9f2}.rs-recent-list{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}.rs-recent-list a{padding:8px 11px;border-radius:999px;background:#fff;border:1px solid #e3e3ee;text-decoration:none;color:#55506f;font-size:12px;font-weight:800}.rs-show-more{display:block;margin:14px auto 0;border:1px solid #ddd8f5;background:#fff;color:#5b4bc8;border-radius:999px;padding:10px 16px;font-weight:900;cursor:pointer}.rs-cluster-collapsed .tool-card:nth-child(n+7){display:none}@media(max-width:760px){.rs-related-grid{grid-template-columns:1fr 1fr}.rs-related a,.rs-create a{padding:13px}.tool-shell,.tool-page{overflow-x:hidden}.hero-actions{flex-direction:column}.hero-actions>*{width:100%}.card-grid{grid-template-columns:1fr 1fr}}@media(max-width:520px){.rs-related-grid{grid-template-columns:1fr}.card-grid{grid-template-columns:1fr}}';document.head.appendChild(s);}
   function repairLinks(){
-    document.querySelectorAll('a[href="/"],a[href="../"],a[href="./"]').forEach(function(a){a.setAttribute('href',HOME);});
-    document.querySelectorAll('a[href^="/#"]').forEach(function(a){a.setAttribute('href',HOME+a.getAttribute('href').slice(2));});
-    document.querySelectorAll('a[href="https://randospino.com/"],a[href^="https://randospino.com/#"]').forEach(function(a){var h=a.getAttribute('href');a.setAttribute('href',HOME+(h.indexOf('#')>=0?h.slice(h.indexOf('#')+1):''));});
+    document.querySelectorAll('a[href="/"],a[href="../"],a[href="./"],a[href="https://themohamadaliuk-dotcom.github.io/randospino/"],a[href="https://randospino.com/"]').forEach(function(a){a.setAttribute('href',HOME);});
+    document.querySelectorAll('a[href^="/#"],a[href^="https://randospino.com/#"],a[href^="https://themohamadaliuk-dotcom.github.io/randospino/#"]').forEach(function(a){var h=a.getAttribute('href');var i=h.indexOf('#');a.setAttribute('href',i>=0?HOME+h.slice(i):HOME);});
+    document.addEventListener('click',function(e){
+      var a=e.target&&e.target.closest?e.target.closest('a'):null;
+      if(!a)return;
+      var text=(a.textContent||'').trim().toLowerCase();
+      var cls=(a.className||'').toString().toLowerCase();
+      var href=a.getAttribute('href')||'';
+      if(text==='home'||text==='randospino'||cls.indexOf('brand')>=0||href==='/'||href==='../'||href==='./'){
+        e.preventDefault();
+        e.stopPropagation();
+        window.location.assign(HOME);
+      }
+    },true);
   }
   function currentSlug(){var m=location.pathname.match(/\/randospino\/([^/]+)\/?$/);return m?m[1]:'';}
   function saveRecent(){var slug=currentSlug();if(!slug||slug==='privacy')return;try{var arr=JSON.parse(localStorage.getItem('rs_recent')||'[]');arr=[slug].concat(arr.filter(function(x){return x!==slug;})).slice(0,6);localStorage.setItem('rs_recent',JSON.stringify(arr));}catch(e){}}
