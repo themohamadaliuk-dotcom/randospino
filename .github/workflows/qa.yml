@@ -15,6 +15,16 @@ jobs:
         run: |
           set -e
           for f in app.js data.js new-tools.js new-tools-extra.js more-tools.js home-v5.js home-v6.js home-v6-finish.js analytics.js project-site-fix.js wheel-fix.js wheel-v2.js rando-v1.js rando-search-v1.js rando-v1-fix.js; do node --check "$f"; done
+      - name: Validate navigation repair and site base
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          fix=Path('project-site-fix.js').read_text(encoding='utf-8')
+          expected="https://themohamadaliuk-dotcom.github.io/randospino/"
+          if expected not in fix: raise SystemExit('Navigation repair script is missing the live RandoSpino Home URL.')
+          if 'function root(){return HOME;}' not in fix: raise SystemExit('Navigation repair must use the live Home URL for generated links.')
+          print('Validated navigation repair target and Home URL.')
+          PY
       - name: Validate routes, sitemap, links and assets
         run: |
           python - <<'PY'
