@@ -14,7 +14,7 @@ jobs:
       - name: JavaScript syntax
         run: |
           set -e
-          for f in app.js data.js new-tools.js new-tools-extra.js more-tools.js home-v5.js home-v6.js home-v6-finish.js analytics.js project-site-fix.js wheel-fix.js wheel-v2.js; do node --check "$f"; done
+          for f in app.js data.js new-tools.js new-tools-extra.js more-tools.js home-v5.js home-v6.js home-v6-finish.js analytics.js project-site-fix.js wheel-fix.js wheel-v2.js rando-v1.js; do node --check "$f"; done
       - name: Validate routes, sitemap, links and assets
         run: |
           python - <<'PY'
@@ -36,8 +36,6 @@ jobs:
           bad_links=[]; bad_assets=[]
           for page in pages:
               text=page.read_text(encoding='utf-8')
-              # GitHub Pages rewrites nested href="/" and href="/#..." to ../ and ../#... during deployment.
-              # Validate the post-rewrite shape here so source templates remain portable.
               normalized=text.replace('href="/#','href="../#').replace('href="/"','href="../"')
               if 'href="/"' in normalized or 'href="/#' in normalized or 'src="/' in normalized: bad_links.append(page.as_posix())
               for attr in ('src','href'):
@@ -57,7 +55,7 @@ jobs:
           from pathlib import Path
           seo={'random-picker-for-classroom/index.html','random-team-generator-for-work/index.html','random-picker-for-parties/index.html','random-wheel-for-students/index.html','random-game-generator/index.html','random-name-generators/index.html','random-team-generators/index.html','random-food-generators/index.html','random-decision-tools/index.html','random-party-games/index.html','random-wheel-spinner/index.html'}
           selfc={'wheel-spinner/index.html','random-planet/index.html','random-element/index.html','random-era/index.html','random-activity/index.html','random-classroom-choice/index.html','random-food-ingredient/index.html'}
-          for css in ('style.css','home-v3.css','home-v6-finish.css','wheel-v2.css'):
+          for css in ('style.css','home-v3.css','home-v6-finish.css','wheel-v2.css','rando-v1.css'):
               t=Path(css).read_text(encoding='utf-8')
               if t.count('{')!=t.count('}'): raise SystemExit(f'CSS brace mismatch: {css}')
           home=Path('index.html').read_text(encoding='utf-8')
@@ -74,5 +72,5 @@ jobs:
           wheel=Path('wheel-spinner/index.html').read_text(encoding='utf-8')
           for marker in ('id="wheelItems"','id="wheelCanvas"','id="spinWheel"','margin-top:8px','crypto.getRandomValues'):
               if marker not in wheel: raise SystemExit(f'Wheel Spinner missing: {marker}')
-          print('Validated page wiring, CSS, self-contained generators and Wheel Spinner.')
+          print('Validated page wiring, CSS, self-contained generators, RandoSpino 1.0 enhancement assets and Wheel Spinner.')
           PY
