@@ -23,6 +23,7 @@ jobs:
           expected="https://themohamadaliuk-dotcom.github.io/randospino/"
           if expected not in fix: raise SystemExit('Navigation repair script is missing the live RandoSpino Home URL.')
           if 'function root(){return HOME;}' not in fix: raise SystemExit('Navigation repair must use the live Home URL for generated links.')
+          if 'https://randospino.com' in fix: raise SystemExit('Navigation repair still references the old domain.')
           print('Validated navigation repair target and Home URL.')
           PY
       - name: Validate routes, sitemap, links and assets
@@ -30,11 +31,14 @@ jobs:
           python - <<'PY'
           from pathlib import Path
           import re
+          BASE='https://themohamadaliuk-dotcom.github.io/randospino/'
           html=Path('index.html').read_text(encoding='utf-8')
+          if 'randospino.com' in html: raise SystemExit('Homepage still contains the old domain.')
           homepage_routes=sorted(set(re.findall(r'href="\./([^"/#?]+)\/"',html)))
           missing=[str(Path(p)/'index.html') for p in homepage_routes if not (Path(p)/'index.html').exists()]
           if missing: raise SystemExit('Homepage tools without pages: '+', '.join(missing))
           sitemap=Path('sitemap.xml').read_text(encoding='utf-8')
+          if 'randospino.com' in sitemap: raise SystemExit('sitemap.xml still contains the old domain')
           sitemap_paths=sorted(set(re.findall(r'<loc>https://[^<]+(/[^<]*)</loc>',sitemap)))
           missing=[]
           for path in sitemap_paths:
@@ -42,12 +46,14 @@ jobs:
               target=Path('index.html') if clean=='' else Path(clean.lstrip('/'))/'index.html'
               if not target.exists(): missing.append(str(target))
           if missing: raise SystemExit('Sitemap routes without pages: '+', '.join(missing))
+          if not Path('404.html').exists(): raise SystemExit('Missing custom 404.html recovery page')
           pages=list(Path('.').glob('*/index.html'))
           bad_links=[]; bad_assets=[]
           for page in pages:
               text=page.read_text(encoding='utf-8')
-              normalized=text.replace('href="/#','href="../#').replace('href="/"','href="../"')
+              normalized=text.replace('href="/#', 'href="'+BASE+'#').replace('href="/"', 'href="'+BASE+'"')
               if 'href="/"' in normalized or 'href="/#' in normalized or 'src="/' in normalized: bad_links.append(page.as_posix())
+              if 'randospino.com' in text: bad_links.append(page.as_posix()+': old domain')
               for attr in ('src','href'):
                   for value in re.findall(attr+r'="([^\"]+)"',normalized):
                       if value.startswith('../'):
@@ -55,7 +61,7 @@ jobs:
                           target=page.parent/clean
                           if clean.endswith('/'): target=target/'index.html'
                           if not target.exists(): bad_assets.append(f'{page.as_posix()}: {value}')
-          if bad_links: raise SystemExit('Nested pages contain root links/assets: '+', '.join(bad_links))
+          if bad_links: raise SystemExit('Broken source/deployed navigation found: '+', '.join(bad_links))
           if bad_assets: raise SystemExit('Missing local assets: '+', '.join(bad_assets))
           print(f'Validated {len(homepage_routes)} homepage routes, {len(sitemap_paths)} sitemap routes and {len(pages)} nested pages.')
           PY
