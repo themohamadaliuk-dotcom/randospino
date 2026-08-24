@@ -1,0 +1,54 @@
+name: Normalize RandoSpino source links
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  normalize:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Normalize every HTML page
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          BASE = '/randospino/'
+          OLD = 'https://randospino.com/'
+          changed = []
+          for page in Path('.').rglob('index.html'):
+              if '.git' in page.parts:
+                  continue
+              text = page.read_text(encoding='utf-8')
+              new = text
+              if page.as_posix() != 'index.html':
+                  new = new.replace('href="/"', f'href="{BASE}"')
+                  new = new.replace('href="/#', f'href="{BASE}#')
+                  new = new.replace('href="../"', f'href="{BASE}"')
+                  new = new.replace('href="../#', f'href="{BASE}#')
+              new = new.replace(OLD, 'https://themohamadaliuk-dotcom.github.io/randospino/')
+              if new != text:
+                  page.write_text(new, encoding='utf-8')
+                  changed.append(page.as_posix())
+          print(f'Normalized {len(changed)} HTML pages.')
+          for p in changed:
+              print(p)
+          PY
+
+      - name: Commit normalized source
+        run: |
+          git config user.name "RandoSpino Bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if git diff --quiet; then
+            echo "No source navigation changes needed."
+            exit 0
+          fi
+          git add -- '*/index.html' index.html
+          git commit -m "Normalize RandoSpino source navigation"
+          git push
