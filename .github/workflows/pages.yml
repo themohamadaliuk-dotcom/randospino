@@ -37,7 +37,9 @@ jobs:
                   text=text.replace('https://randospino.com/','https://themohamadaliuk-dotcom.github.io/randospino/')
                   injections=[
                       '<link rel="stylesheet" href="./fun-background.css?v=1">',
-                      '<script src="./project-site-fix.js?v=3" defer></script>'
+                      '<link rel="stylesheet" href="./rando-v1.css?v=1">',
+                      '<script src="./project-site-fix.js?v=3" defer></script>',
+                      '<script src="./rando-v1.js?v=1" defer></script>'
                   ]
                   for tag in injections:
                       if tag not in text:
@@ -48,7 +50,9 @@ jobs:
                   text=re.sub(r'(<link[^>]+rel="canonical"[^>]+href=")[^"]+(")',lambda m:m.group(1)+base+route+m.group(2),text,flags=re.I)
                   injections=[
                       '<link rel="stylesheet" href="../fun-background.css?v=1">',
-                      '<script src="../project-site-fix.js?v=3" defer></script>'
+                      '<link rel="stylesheet" href="../rando-v1.css?v=1">',
+                      '<script src="../project-site-fix.js?v=3" defer></script>',
+                      '<script src="../rando-v1.js?v=1" defer></script>'
                   ]
                   for tag in injections:
                       if tag not in text:
@@ -56,7 +60,7 @@ jobs:
                   if page.as_posix()=='wheel-spinner/index.html':
                       text=text.replace('../wheel-v2.css"','../wheel-v2.css?v=7"')
               page.write_text(text,encoding='utf-8')
-          print('Normalized project-site navigation, canonicals, background layer, compatibility scripts and wheel cache.')
+          print('Normalized project-site navigation, canonicals, background, RandoSpino 1.0 UX assets and wheel cache.')
           PY
       - name: Normalize sitemap and robots.txt to the live GitHub Pages URL
         run: |
