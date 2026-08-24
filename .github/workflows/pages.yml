@@ -31,42 +31,41 @@ jobs:
           from pathlib import Path
           import re
           base='https://themohamadaliuk-dotcom.github.io/randospino/'
-          for page in [Path('index.html'), *Path('.').glob('*/index.html')]:
+          project='/randospino/'
+          for page in [Path('index.html'), *Path('.').rglob('index.html')]:
+              if '.git' in page.parts:
+                  continue
               text=page.read_text(encoding='utf-8')
               if page.as_posix()=='index.html':
                   text=text.replace('https://randospino.com/','https://themohamadaliuk-dotcom.github.io/randospino/')
                   injections=[
                       '<link rel="stylesheet" href="./fun-background.css?v=1">',
                       '<link rel="stylesheet" href="./rando-v1.css?v=1">',
-                      '<script src="./project-site-fix.js?v=4" defer></script>',
+                      '<script src="./project-site-fix.js?v=5" defer></script>',
                       '<script src="./rando-search-v1.js?v=1" defer></script>',
                       '<script src="./rando-v1.js?v=1" defer></script>',
                       '<script src="./rando-v1-fix.js?v=1" defer></script>'
                   ]
-                  for tag in injections:
-                      if tag not in text:
-                          text=text.replace('</head>',tag+'</head>',1)
               else:
-                  # Home/logo links are absolute on purpose. Relative ../ links can resolve to the
-                  # account root when a directory URL is missing its trailing slash.
-                  text=text.replace('href="/#', 'href="'+base+'#')
-                  text=text.replace('href="/"', 'href="'+base+'"')
+                  text=text.replace('href="/#','href="'+project+'#').replace('href="/"','href="'+project+'"')
+                  text=text.replace('href="'+base+'"','href="'+project+'"')
+                  text=text.replace('href="../"','href="'+project+'"')
                   route=page.parent.as_posix().strip('./')+'/'
                   text=re.sub(r'(<link[^>]+rel="canonical"[^>]+href=")[^"]+(")',lambda m:m.group(1)+base+route+m.group(2),text,flags=re.I)
                   injections=[
                       '<link rel="stylesheet" href="../fun-background.css?v=1">',
                       '<link rel="stylesheet" href="../rando-v1.css?v=1">',
-                      '<script src="../project-site-fix.js?v=4" defer></script>',
+                      '<script src="../project-site-fix.js?v=5" defer></script>',
                       '<script src="../rando-v1.js?v=1" defer></script>',
                       '<script src="../rando-v1-fix.js?v=1" defer></script>'
                   ]
-                  for tag in injections:
-                      if tag not in text:
-                          text=text.replace('</head>',tag+'</head>',1)
                   if page.as_posix()=='wheel-spinner/index.html':
                       text=text.replace('../wheel-v2.css"','../wheel-v2.css?v=7"')
+              for tag in injections:
+                  if tag not in text:
+                      text=text.replace('</head>',tag+'</head>',1)
               page.write_text(text,encoding='utf-8')
-          print('Normalized project-site navigation, absolute Home links, canonicals, background, RandoSpino 1.0 UX assets, intent search and wheel cache.')
+          print('Normalized all project-site navigation, canonicals, UX assets and wheel cache.')
           PY
       - name: Normalize sitemap and robots.txt to the live GitHub Pages URL
         run: |
