@@ -14,7 +14,7 @@ jobs:
       - name: JavaScript syntax
         run: |
           set -e
-          for f in app.js data.js new-tools.js new-tools-extra.js more-tools.js home-v5.js home-v6.js home-v6-finish.js analytics.js project-site-fix.js wheel-fix.js wheel-v2.js rando-v1.js; do node --check "$f"; done
+          for f in app.js data.js new-tools.js new-tools-extra.js more-tools.js home-v5.js home-v6.js home-v6-finish.js analytics.js project-site-fix.js wheel-fix.js wheel-v2.js rando-v1.js rando-search-v1.js; do node --check "$f"; done
       - name: Validate routes, sitemap, links and assets
         run: |
           python - <<'PY'
@@ -72,5 +72,5 @@ jobs:
           wheel=Path('wheel-spinner/index.html').read_text(encoding='utf-8')
           for marker in ('id="wheelItems"','id="wheelCanvas"','id="spinWheel"','margin-top:8px','crypto.getRandomValues'):
               if marker not in wheel: raise SystemExit(f'Wheel Spinner missing: {marker}')
-          print('Validated page wiring, CSS, self-contained generators, RandoSpino 1.0 enhancement assets and Wheel Spinner.')
+          print('Validated page wiring, CSS, self-contained generators, RandoSpino 1.0 assets, intent search and Wheel Spinner.')
           PY
