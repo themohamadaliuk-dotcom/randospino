@@ -74,9 +74,11 @@
   function addRelated(result,actions){
     var s=slug(),list=RELATED[s];if(!list||!list.length)return;
     var block=document.createElement('section');block.className='rs10-related';
-    block.innerHTML='<div class="rs10-related-head"><span>KEEP GOING</span><b>Try another random tool</b></div><div class="rs10-related-grid">'+list.map(function(x){return '<a href="'+rel(x)+'"><span>✦</span><b>'+NAMES[x]||x+'</b><i>→</i></a>';}).join('')+'</div>';
+    block.innerHTML='<div class="rs10-related-head"><span>KEEP GOING</span><b>Try another random tool</b></div><div class="rs10-related-grid">'+list.map(function(x){return '<a href="'+rel(x)+'"><span>✦</span><b>'+esc(NAMES[x]||x)+'</b><i>→</i></a>';}).join('')+'</div>';
     actions.insertAdjacentElement('afterend',block);
   }
+  function esc(s){return String(s).replace(/[&<>\"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',"'":'&#39;'}[c];});}
+  function secureIndex(max){if(max<=0)return 0;if(window.crypto&&window.crypto.getRandomValues){var a=new Uint32Array(1),span=max+1,limit=Math.floor(4294967296/span)*span,v;do{window.crypto.getRandomValues(a);v=a[0];}while(v>=limit);return v%span;}return Math.floor(Math.random()*(max+1));}
   function observeResult(){
     var result=document.getElementById('result');if(!result)return;
     addResultExperience();
@@ -101,7 +103,7 @@
       b.addEventListener('click',function(){
         var cards=document.querySelectorAll('#v3-directory .v3-card');
         if(!cards.length)return;
-        var choices=Array.prototype.slice.call(cards),choice=choices[Math.floor(Math.random()*choices.length)];
+        var choices=Array.prototype.slice.call(cards),choice=choices[secureIndex(choices.length-1)];
         var href=choice.getAttribute('href');if(!href)return;
         b.disabled=true;b.textContent='✨ Choosing…';
         setTimeout(function(){location.href=href+'?surprise=1';},180);
