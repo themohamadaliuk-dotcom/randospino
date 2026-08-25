@@ -15,6 +15,8 @@ jobs:
         run: |
           set -e
           for f in app.js data.js new-tools.js new-tools-extra.js more-tools.js home-v5.js home-v6.js home-v6-finish.js analytics.js project-site-fix.js wheel-fix.js wheel-v2.js rando-v1.js rando-search-v1.js rando-v1-fix.js; do node --check "$f"; done
+      - name: Robust smoke QA
+        run: python qa-smoke.py
       - name: Validate navigation repair and site base
         run: |
           python - <<'PY'
@@ -31,7 +33,6 @@ jobs:
           python - <<'PY'
           from pathlib import Path
           import re
-          BASE='https://themohamadaliuk-dotcom.github.io/randospino/'
           html=Path('index.html').read_text(encoding='utf-8')
           if 'randospino.com' in html: raise SystemExit('Homepage still contains the old domain.')
           homepage_routes=sorted(set(re.findall(r'href="\./([^"/#?]+)\/"',html)))
@@ -48,20 +49,18 @@ jobs:
           if missing: raise SystemExit('Sitemap routes without pages: '+', '.join(missing))
           if not Path('404.html').exists(): raise SystemExit('Missing custom 404.html recovery page')
           pages=list(Path('.').glob('*/index.html'))
-          bad_links=[]; bad_assets=[]
+          bad_assets=[]
           for page in pages:
               text=page.read_text(encoding='utf-8')
-              normalized=text.replace('href="/#', 'href="'+BASE+'#').replace('href="/"', 'href="'+BASE+'"')
-              if 'href="/"' in normalized or 'href="/#' in normalized or 'src="/' in normalized: bad_links.append(page.as_posix())
-              if 'randospino.com' in text: bad_links.append(page.as_posix()+': old domain')
+              if 'randospino.com' in text: raise SystemExit(f'{page}: old domain remains')
+              if 'href="/"' in text or 'href="/#' in text: raise SystemExit(f'{page}: unsafe root navigation remains')
               for attr in ('src','href'):
-                  for value in re.findall(attr+r'="([^\"]+)"',normalized):
+                  for value in re.findall(attr+r'="([^\"]+)"',text):
                       if value.startswith('../'):
                           clean=value.split('#',1)[0].split('?',1)[0]
                           target=page.parent/clean
                           if clean.endswith('/'): target=target/'index.html'
                           if not target.exists(): bad_assets.append(f'{page.as_posix()}: {value}')
-          if bad_links: raise SystemExit('Broken source/deployed navigation found: '+', '.join(bad_links))
           if bad_assets: raise SystemExit('Missing local assets: '+', '.join(bad_assets))
           print(f'Validated {len(homepage_routes)} homepage routes, {len(sitemap_paths)} sitemap routes and {len(pages)} nested pages.')
           PY
@@ -71,9 +70,6 @@ jobs:
           from pathlib import Path
           seo={'random-picker-for-classroom/index.html','random-team-generator-for-work/index.html','random-picker-for-parties/index.html','random-wheel-for-students/index.html','random-game-generator/index.html','random-name-generators/index.html','random-team-generators/index.html','random-food-generators/index.html','random-decision-tools/index.html','random-party-games/index.html','random-wheel-spinner/index.html'}
           selfc={'wheel-spinner/index.html','random-planet/index.html','random-element/index.html','random-era/index.html','random-activity/index.html','random-classroom-choice/index.html','random-food-ingredient/index.html'}
-          for css in ('style.css','home-v3.css','home-v6-finish.css','wheel-v2.css','rando-v1.css'):
-              t=Path(css).read_text(encoding='utf-8')
-              if t.count('{')!=t.count('}'): raise SystemExit(f'CSS brace mismatch: {css}')
           home=Path('index.html').read_text(encoding='utf-8')
           for required in ('analytics.js','home-v6.js','home-v6-finish.js','home-v6-finish.css'):
               if required not in home: raise SystemExit(f'Homepage missing asset: {required}')
