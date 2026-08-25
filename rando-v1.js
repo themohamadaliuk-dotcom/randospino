@@ -36,7 +36,7 @@
     'pet-name-generator':'Pet Name Generator','party-game-generator':'Party Game Generator','random-board-game':'Random Board Game','who-goes-first':'Who Goes First?'
   };
 
-  function slug(){var p=location.pathname.replace(/\\/+/g,'/').replace(/\/$/,'').split('/');return p[p.length-1]||'';}
+  function slug(){var p=location.pathname.replace(/\/+/g,'/').replace(/\/$/,'').split('/');return p[p.length-1]||'';}
   function rel(sl){return '../'+sl+'/';}
   function esc(s){return String(s).replace(/[&<>\"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',"'":'&#39;'}[c];});}
   function copyText(text,btn){if(!text)return;if(navigator.clipboard)navigator.clipboard.writeText(text).then(function(){btn.textContent='Copied ✓';setTimeout(function(){btn.textContent='Copy';},1100);});}
