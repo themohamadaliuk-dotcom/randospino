@@ -41,6 +41,7 @@ jobs:
                   injections=[
                       '<link rel="stylesheet" href="./fun-background.css?v=1">',
                       '<link rel="stylesheet" href="./rando-v1.css?v=1">',
+                      '<link rel="stylesheet" href="./logo-global.css?v=3">',
                       '<script src="./project-site-fix.js?v=5" defer></script>',
                       '<script src="./rando-search-v1.js?v=1" defer></script>',
                       '<script src="./rando-v1.js?v=1" defer></script>',
@@ -55,6 +56,7 @@ jobs:
                   injections=[
                       '<link rel="stylesheet" href="../fun-background.css?v=1">',
                       '<link rel="stylesheet" href="../rando-v1.css?v=1">',
+                      '<link rel="stylesheet" href="../logo-global.css?v=3">',
                       '<script src="../project-site-fix.js?v=5" defer></script>',
                       '<script src="../rando-v1.js?v=1" defer></script>',
                       '<script src="../rando-v1-fix.js?v=1" defer></script>'
@@ -65,7 +67,7 @@ jobs:
                   if tag not in text:
                       text=text.replace('</head>',tag+'</head>',1)
               page.write_text(text,encoding='utf-8')
-          print('Normalized all project-site navigation, canonicals, UX assets and wheel cache.')
+          print('Normalized project-site navigation, canonicals, UX assets, wheel cache and global logo styling.')
           PY
       - name: Normalize sitemap and robots.txt to the live GitHub Pages URL
         run: |
