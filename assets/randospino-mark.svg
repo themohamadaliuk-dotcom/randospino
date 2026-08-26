@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-labelledby="title">
+  <title id="title">RandoSpino mark</title>
+  <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff5f98"/><stop offset=".52" stop-color="#7b61ff"/><stop offset="1" stop-color="#14b8a6"/></linearGradient></defs>
+  <circle cx="100" cy="100" r="91" fill="#171827"/>
+  <path d="M100 9a91 91 0 0 1 78.8 45.5l-39.4 22.8A45 45 0 0 0 100 54Z" fill="#ff5f98"/>
+  <path d="M178.8 54.5a91 91 0 0 1 0 91l-39.4-22.8a45 45 0 0 0 0-45.4Z" fill="#7b61ff"/>
+  <path d="M178.8 145.5A91 91 0 0 1 100 191v-45a45 45 0 0 0 39.4-22.8Z" fill="#14b8a6"/>
+  <path d="M100 191a91 91 0 0 1-78.8-45.5l39.4-22.8A45 45 0 0 0 100 146Z" fill="#ffc857"/>
+  <path d="M21.2 145.5a91 91 0 0 1 0-91l39.4 22.8a45 45 0 0 0 0 45.4Z" fill="#ff7a59"/>
+  <path d="M21.2 54.5A91 91 0 0 1 100 9v45a45 45 0 0 0-39.4 22.8Z" fill="#6f63ff"/>
+  <circle cx="100" cy="100" r="39" fill="#fff"/>
+  <text x="100" y="115" text-anchor="middle" font-family="Inter,Arial,sans-serif" font-size="51" font-weight="900" fill="#171827">R</text>
+  <path d="M100 3V13M187 100h10M100 187v10M3 100H13" stroke="#fff" stroke-width="5" stroke-linecap="round" opacity=".9"/>
+</svg>
