@@ -2,10 +2,10 @@
   'use strict';
   var LIVE_HOME='https://themohamadaliuk-dotcom.github.io/randospino/';
   var HOME='/randospino/';
-  function root(){return LIVE_HOME;}
+  function root(){return HOME;}
   function fixLinks(){
-    document.querySelectorAll('a[href="/"],a[href="../"],a[href="./"]').forEach(function(a){a.setAttribute('href',HOME);});
-    document.querySelectorAll('a[href^="/#"],a[href^="'+HOME+'#"]').forEach(function(a){var h=a.getAttribute('href')||'';var i=h.indexOf('#');a.setAttribute('href',HOME+(i>=0?h.slice(i):''));});
+    document.querySelectorAll('a[href="/"],a[href="../"],a[href="./"]').forEach(function(a){a.setAttribute('href',root());});
+    document.querySelectorAll('a[href^="/#"],a[href^="'+HOME+'#"]').forEach(function(a){var h=a.getAttribute('href')||'';var i=h.indexOf('#');a.setAttribute('href',root()+(i>=0?h.slice(i):''));});
   }
   function addGlobalStyle(){
     if(document.getElementById('rs-site-fix-style'))return;
@@ -28,7 +28,7 @@
     var sec=document.createElement('section');sec.className='rs-site-fix';
     sec.innerHTML='<div><span class="kicker">KEEP GOING</span><h2>Try something related</h2></div><div class="rs-site-fix-grid"></div>';
     var grid=sec.querySelector('.rs-site-fix-grid');
-    items.forEach(function(x){var a=document.createElement('a');a.href=HOME+x+'/';a.innerHTML='<span>'+ (LABELS[x]||x.replace(/-/g,' ')) +'</span><span>→</span>';grid.appendChild(a);});
+    items.forEach(function(x){var a=document.createElement('a');a.href=root()+x+'/';a.innerHTML='<span>'+ (LABELS[x]||x.replace(/-/g,' ')) +'</span><span>→</span>';grid.appendChild(a);});
     main.appendChild(sec);
   }
   function simplifyHome(){
