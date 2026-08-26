@@ -1,6 +1,8 @@
 (function(){
   'use strict';
+  var LIVE_HOME='https://themohamadaliuk-dotcom.github.io/randospino/';
   var HOME='/randospino/';
+  function root(){return LIVE_HOME;}
   function fixLinks(){
     document.querySelectorAll('a[href="/"],a[href="../"],a[href="./"]').forEach(function(a){a.setAttribute('href',HOME);});
     document.querySelectorAll('a[href^="/#"],a[href^="'+HOME+'#"]').forEach(function(a){var h=a.getAttribute('href')||'';var i=h.indexOf('#');a.setAttribute('href',HOME+(i>=0?h.slice(i):''));});
