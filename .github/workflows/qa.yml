@@ -14,7 +14,7 @@ jobs:
       - name: JavaScript syntax
         run: |
           set -e
-          for f in app.js data.js new-tools.js new-tools-extra.js more-tools.js home-v5.js home-v6.js home-v6-finish.js analytics.js project-site-fix.js wheel-fix.js wheel-v2.js rando-v1.js rando-search-v1.js rando-v1-fix.js; do node --check "$f"; done
+          for f in app.js data.js new-tools.js new-tools-extra.js more-tools.js home-v5.js home-v6.js home-v6-finish.js analytics.js project-site-fix.js wheel-fix.js wheel-v2.js wheel-v3-fix.js rando-v1.js rando-search-v1.js rando-v1-fix.js; do node --check "$f"; done
       - name: Robust smoke QA
         run: python qa-smoke.py
       - name: Validate navigation repair and site base
@@ -82,7 +82,13 @@ jobs:
                   if 'data-tool=' not in text: raise SystemExit(f'Missing data-tool: {page}')
                   if not any(x in text for x in ('../app.js','../new-tools.js','../new-tools-extra.js','../more-tools.js')): raise SystemExit(f'Missing generator engine: {page}')
           wheel=Path('wheel-spinner/index.html').read_text(encoding='utf-8')
-          for marker in ('id="wheelItems"','id="wheelCanvas"','id="spinWheel"','margin-top:8px','crypto.getRandomValues'):
+          wheel_css=Path('wheel-v2.css').read_text(encoding='utf-8')
+          pages_workflow=Path('.github/workflows/pages.yml').read_text(encoding='utf-8')
+          for marker in ('id="wheelItems"','id="wheelCanvas"','id="spinWheel"','margin-top:8px','crypto.getRandomValues','function spinWheel','removeWinner','setItems(remaining,true)','requestAnimationFrame'):
               if marker not in wheel: raise SystemExit(f'Wheel Spinner missing: {marker}')
-          print('Validated page wiring, CSS, self-contained generators, RandoSpino 1.0 assets, intent search and Wheel Spinner.')
+          if 'wheel-v3-fix.js?v=1' not in pages_workflow: raise SystemExit('Pages workflow does not deploy wheel-v3-fix.js')
+          if 'clip-path:polygon(0 0,100% 0,50% 100%)' not in wheel_css: raise SystemExit('Wheel pointer down-pointing rule is missing')
+          if 'canvas.style.transform' in wheel: raise SystemExit('Wheel still uses conflicting CSS canvas rotation')
+          if not Path('wheel-v3-fix.js').exists(): raise SystemExit('Missing wheel-v3-fix.js')
+          print('Validated page wiring, CSS, self-contained generators, RandoSpino 1.0 assets, intent search and hardened Wheel Spinner.')
           PY
