@@ -62,7 +62,7 @@ jobs:
                       '<script src="../rando-v1-fix.js?v=1" defer></script>'
                   ]
                   if page.as_posix()=='wheel-spinner/index.html':
-                      text=text.replace('../wheel-v2.css"','../wheel-v2.css?v=7"')
+                      text=re.sub(r'wheel-v2\.css(?:\?v=\d+)?"','wheel-v2.css?v=9"',text)
               for tag in injections:
                   if tag not in text:
                       text=text.replace('</head>',tag+'</head>',1)
